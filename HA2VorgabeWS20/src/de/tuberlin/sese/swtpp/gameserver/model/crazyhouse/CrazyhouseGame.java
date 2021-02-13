@@ -211,6 +211,39 @@ public class CrazyhouseGame extends Game implements Serializable{
 	 ******************************************/
 
 	
+	public int LastSlash(String state) {
+		int n = state.length();
+		int last = 0;
+		for(int i = 0; i < n; i++) {//durch jedes Zeichen itteriren
+			if(state.charAt(i) == 47) {//wenn Slash "/" dann merke Index
+				last = i;
+			}
+		}	
+		//last ist nun der index des letzten slashs
+		return last;
+	}
+	
+	public String nFirstFromString(String state, int n) {
+		String ret = "";
+		for(int i = 0; i < n+1; i++) {
+			ret += state.charAt(i);//kopiere alle zeichen bis zu diesem slash (inklusive)
+		}
+		return ret;	//gebe string bis zum letzten slash zurück
+	}
+	
+	public String nLastFromString(String state, int n) {
+		int ende = state.length()-1;
+		String ret = "";
+		for(int i = 0; i < n; i++) {
+			ret += state.charAt(ende);
+			ende--;
+		}
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append(ret);
+		sBuilder.reverse();
+		return sBuilder.toString();
+	}
+	
 	
 	public void sortRand(char[] Rand) {	
 		Arrays.sort(Rand);
@@ -220,56 +253,32 @@ public class CrazyhouseGame extends Game implements Serializable{
 	
 	@Override
 	public void setBoard(String state) {
-		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
-		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
-		// TODO: implement
-		
-		String[] teiler = state.split("\\/"); // Format aufspliten
-		
-		state = "";			// Hier Spielfeldformat laden
-		for(int i = 0; i<= 7; i++) {
-			for(char buchstaben: teiler[i].toCharArray() ) {
-				state = state + buchstaben;
-			}
-			state = state + "/";
-		}
-		
-		
 		this.Spielfeld = new char[8][8];
 		int x = 0;
 		int y = 7;
-		for(char element : state.toCharArray()) {
+		int n = this.LastSlash(state); // wir wollen erstmal nur das spielfeld aufbauen, also nur die zeichen bis zum letzten slash für forEach loop <--I
+		String lastSlashString = this.nFirstFromString(state, n); // wir bauen einen String der das oben beschriebene erfüllt: ----------------------------I
+		char[] lastSlashArray = lastSlashString.toCharArray(); // char array für for each loop
+		for(char element : lastSlashArray) {
 			if( ((int) element) == 47) {
 				y = y -1;
-				x = 0;
-			}else if(    ( ( ( (int) element) >= 65 ) && ( ( (int) element) <= 90) ) ||  ( ( ((int) element) >= 97 ) && ( ( (int) element) <= 122) )  ) {
+				x = 0;	
+			}else if(((((int) element) >= 65 ) && (((int) element) <= 90)) ||  ((((int) element) >= 97 ) && (((int) element) <= 122))) {
 				this.Spielfeld[x][y] = element;
 				x = x+1;
 			}else {
 				x = x + ( ((int)element) - 48  );
 			}
 		}
-		
-		
-		if(teiler.length == 9) { 	//wenn es Reserve gibt, Reserve laden
-			Rand = teiler[8].toCharArray();
+		int letzten = state.length()-1 - n; //bin gerade müde, ka wie genau mit index ya ali
+		this.Rand = new char[letzten];
+		x = 0;
+		for(char c : this.nLastFromString(state, letzten).toCharArray()) {
+			this.Rand[x] = c;
+			x++;
 		}
-								
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		sortRand(this.Rand); //muss noch implementiert werden
 	}
-	
-	
 
 	@Override
 	public String getBoard() {
@@ -285,7 +294,6 @@ public class CrazyhouseGame extends Game implements Serializable{
 						ruckgabe = ruckgabe + String.valueOf(counter);
 						counter = 0;
 					}
-					
 					ruckgabe = ruckgabe + this.Spielfeld[x][y];
 				}
 			}
@@ -295,23 +303,11 @@ public class CrazyhouseGame extends Game implements Serializable{
 			}
 			ruckgabe = ruckgabe + "/";
 		}
-		
-		///////// Jetzt Rand //////////
-		Arrays.sort(this.Rand);
-		ruckgabe = ruckgabe + new String(Rand); 
-		
-				
-		
-		
-		
-		
-		
-		// replace with real implementation
-		//return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
-		return ruckgabe;
+		String rand = new String(this.Rand);
+		return ruckgabe + rand;// wir hängen noch Rand ans Ende
 	}
-	
-	
+
+	@Override
 	public boolean tryMove(String moveString, Player player) {
 		// TODO: implement
 		int offset1;
@@ -339,6 +335,50 @@ public class CrazyhouseGame extends Game implements Serializable{
 		}
 		return gueltig;
 	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// trymove Schwarz
+	
+	public boolean tryMovee(String moveString, Player player) {
+		// TODO: implement
+		int offset1;
+		if(player == this.blackPlayer) offset1 = 0;//wir sind schwarz
+		else offset1 = 32;							//wir sind weiss
+		offset1 = 0; //nur weil Player = null wir hardcoden, dass wir weiss sind (bei schwarz offset1 = 0)
+		int offset2 = offset1-32;
+		
+		boolean gueltig = false;
+		if(this.isPlayersTurn(player) && (moveString.matches("[a-h]{1}[1-8]{1}-[a-h]{1}[1-8]{1}") || moveString.matches("[p,n,k,r,b,q]{1}-[a-h]{1}[1-8]{1}") || moveString.matches("[P,B,Q,N,K,R]{1}-[a-h]{1}[1-8]{1}") )){
+			int n = moveString.length();
+			int xTo = moveString.charAt(n-2)-97;
+			int yTo = moveString.charAt(n-1)-49;
+			int moveZu = this.Spielfeld[xTo][yTo];
+			if(moveZu >= 97-offset1 && moveZu <= 122-offset1 || moveZu == 107+offset2) return false;
+			if(moveString.charAt(2) == 45) {
+				int xFrom = moveString.charAt(0)-97;
+				int yFrom = moveString.charAt(1)-49;
+				gueltig = this.realMove(xFrom, yFrom, xTo, yTo,this.Spielfeld[xFrom][yFrom]);
+			}
+			else {
+				char figur = moveString.charAt(0);
+				gueltig = this.realPlace(figur,xTo,yTo);
+			}
+		}
+		return gueltig;
+	}
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// trymove Schwarz
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	public boolean realMove(int xFrom, int yFrom, int xTo, int yTo, int figur) {
@@ -398,14 +438,15 @@ public class CrazyhouseGame extends Game implements Serializable{
         spiel.setBoard(brett);
        
         Player weis = null;
+        Player schwarz = null;
         String ali = spiel.getBoard();
         System.out.print(ali + "\n");
-        
-        spiel.tryMove("h7-g8", weis);
-        
-        spiel.tryMove("g8-f8", weis);  
+        spiel.tryMovee("e7-e6", schwarz);
+        spiel.tryMovee("e8-e7", schwarz);
+        System.out.print(spiel.tryMovee("e6-d5", schwarz));
         
         System.out.print(spiel.getBoard());
         
     }
+
 }
