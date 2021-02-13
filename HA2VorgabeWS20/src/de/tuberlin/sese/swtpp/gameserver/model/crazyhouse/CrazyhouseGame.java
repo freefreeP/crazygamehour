@@ -380,25 +380,26 @@ public class CrazyhouseGame extends Game implements Serializable{
 		if(ziel != 0) {	//wir haben einen gegner
 			this.sortRand(this.randHinzu(this.Rand, ziel));// wir fügen die entfernte figur zum Rand hinzu und sortieren den Rand
 		}
-		
 		this.Spielfeld[xTo][yTo] = figur;	//wir bewegen den angreifer auf das neue feld
+		if(figur == 112 && yTo == 0) this.Spielfeld[xTo][yTo] = 113;
+		else if(figur == 80 && yTo == 7) this.Spielfeld[xTo][yTo] = 81;
+		
 		return true;
 	}
 	
 	
 	public static void main(String[] args) {
         CrazyhouseGame spiel = new CrazyhouseGame();
-        String brett = "rnbqkbnr/p7/8/8/8/2p5/P7/RNBQKBNR/";
+        String brett = "rnbqkbnr/p6P/8/8/8/8/4p3/RNBQKBNR/";
         spiel.setBoard(brett);
        
         Player weis = null;
         String ali = spiel.getBoard();
         System.out.print(ali + "\n");
         
-        spiel.tryMove("b1-c3", weis);
+        spiel.tryMove("h7-g8", weis);
         
-        spiel.tryMove("c3-e4", weis);
-        
+        spiel.tryMove("g8-f8", weis);  
         
         System.out.print(spiel.getBoard());
         
