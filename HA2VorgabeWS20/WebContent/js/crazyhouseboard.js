@@ -1,6 +1,6 @@
 /*!
  * crazyhouseboard.js SWTPP team (fellmuth)
- *
+ * 
  * adapted from:
  * chessboard.js v0.3.0
  * Copyright 2013 Chris Oakman
@@ -29,7 +29,7 @@ function validMove(move) {
   // move should be a string
   if (typeof move !== 'string') return false;
 
-  // move should be in the correct form
+  // move should be in the correct form 
   var tmp = move.split('-');
   if (tmp.length !== 2) return false;
 
@@ -58,7 +58,7 @@ function validFen(fen) {
   // FEN should be BOARD_SIZE+1 sections separated by slashes
   var chunks = fen.split('/');
 
-  // number of rows plus one for the pockets
+  // number of rows plus one for the pockets 
   if (chunks.length !== BOARD_SIZE+1) return false;
 
   // check the piece sections
@@ -67,10 +67,10 @@ function validFen(fen) {
 	      return false;
 	}
   }
-
+ 
   // last line is pocket. No numbers with free square. No kings.
   if (chunks[i].search(/^[qrnbpQRNBP]*/) === -1) {
-
+		
   }
 
   return true;
@@ -119,14 +119,14 @@ function fenToObj(fen) {
 	if (validFen(fen) !== true) {
 	 return false;
 	}
-
+	
 	// cut off any move, castling, etc info from the end
 	// we're only interested in position information
 	fen = fen.replace(/ .+$/, '');
-
+	
 	var rows = fen.split('/');
 	var position = {};
-
+	
 	// initialize pocket
 	position[fenToPieceCode('b')] = 0
 	position[fenToPieceCode('B')] = 0
@@ -138,14 +138,14 @@ function fenToObj(fen) {
 	position[fenToPieceCode('Q')] = 0
 	position[fenToPieceCode('p')] = 0
 	position[fenToPieceCode('P')] = 0
-
+	
 	var currentRow = BOARD_SIZE;
-
+	
 	var i;
 	for (i = 0; i < BOARD_SIZE; i++) {
 	 var row = rows[i].split('');
 	 var colIndex = 0;
-
+	
 	 // loop through each character in the FEN section
 	 for (var j = 0; j < row.length; j++) {
 	   // number / empty squares
@@ -159,16 +159,16 @@ function fenToObj(fen) {
 		     colIndex++;
 		}
 	 }
-
+	
 	 currentRow--;
 	}
-
+	
 	// increment each pocket entry
 	var row = rows[i].split('')
 	for (var j = 0; j < row.length; j++) {
-		position[fenToPieceCode(row[j])] = position[fenToPieceCode(row[j])] + 1
+		position[fenToPieceCode(row[j])] = position[fenToPieceCode(row[j])] + 1 		
 	}
-
+	
 	return position;
 }
 
@@ -503,16 +503,16 @@ function expandConfig() {
     cfg.trashSpeed = 100;
   }
 
-
+  
   // make sure position is valid
   if (cfg.hasOwnProperty('position') === true) {
-
+	  
     if (cfg.position === 'start') {
       CURRENT_POSITION = deepCopy(START_POSITION);
     }
 
     else if (validFen(cfg.position) === true) {
-
+    	
       CURRENT_POSITION = fenToObj(cfg.position);
     }
 
@@ -689,33 +689,21 @@ function buildPieceImgSrc(piece) {
   return '';
 }
 
-function buildPiece(piece, count, id) {
+function buildPiece(piece, hidden, id) {
 
-  var html = '<span ' +
-  'data-piece="' + piece + '" ' +
-  'style="width: ' + SQUARE_SIZE + 'px; ' +
-  'height: ' + SQUARE_SIZE + 'px; ' +
-  'display: inline-block; position: relative; ';
-  if(count === 0){
-    html += 'visibility: hidden; ';
-  }
-  html += '" ';
+  var html = '<img src="' + buildPieceImgSrc(piece) + '" ';
   if (id && typeof id === 'string') {
     html += 'id="' + id + '" ';
   }
-  html += 'class="' + CSS.piece + '">';
-  html += '<div style="position: relative; display: inline-block; width: 100%; height: 100%">';
-  html += '<img src="' + buildPieceImgSrc(piece) + '" alt=""' +
-  'style="width: 100%; ' +
-  'height: ' + SQUARE_SIZE + 'px; ' +
-  '" />';
-  if (count > 1) {
-	  html += '<span style="position: absolute; bottom: 0; right: 0;'
-	  html += 'padding: 1px 0.2em;';
-	  html += 'background: #d64f00; color: #fff; text-shadow: 0 1px 1px black">' + count + '</span>';
+  html += 'alt="" ' +
+  'class="' + CSS.piece + '" ' +
+  'data-piece="' + piece + '" ' +
+  'style="width: ' + SQUARE_SIZE + 'px;' +
+  'height: ' + SQUARE_SIZE + 'px;';
+  if (hidden === true) {
+    html += 'visibility:hidden;';
   }
-  html += '</div>'
-  html += '</span>';
+  html += '" />';
 
   return html;
 }
@@ -728,7 +716,7 @@ function buildSparePieces(color) {
 
   var html = '';
   for (var i = 0; i < pieces.length; i++) {
-    html += buildPiece(pieces[i], CURRENT_POSITION[pieces[i]], SPARE_PIECE_ELS_IDS[pieces[i]]);
+    html += buildPiece(pieces[i], CURRENT_POSITION[pieces[i]] === 0, SPARE_PIECE_ELS_IDS[pieces[i]]);
   }
 
   return html;
@@ -748,10 +736,10 @@ function animateSquareToSquare(src, dest, piece, completeFn) {
   // create the animated piece and absolutely position it
   // over the source square
   var animatedPieceId = createId();
-  $('body').append(buildPiece(piece, 1, animatedPieceId));
+  $('body').append(buildPiece(piece, true, animatedPieceId));
   var animatedPieceEl = $('#' + animatedPieceId);
   animatedPieceEl.css({
-    display: 'inline-block',
+    display: '',
     position: 'absolute',
     top: srcSquarePosition.top,
     left: srcSquarePosition.left
@@ -763,7 +751,7 @@ function animateSquareToSquare(src, dest, piece, completeFn) {
   // on complete
   var complete = function() {
     // add the "real" piece to the destination square
-    destSquareEl.append(buildPiece(piece, 1));
+    destSquareEl.append(buildPiece(piece));
 
     // remove the animated piece
     animatedPieceEl.remove();
@@ -852,7 +840,7 @@ function doAnimations(a, oldPos, newPos) {
     // add a piece (no spare pieces)
     if (a[i].type === 'add' && cfg.sparePieces !== true) {
       $('#' + SQUARE_ELS_IDS[a[i].square])
-        .append(buildPiece(a[i].piece, 1))
+        .append(buildPiece(a[i].piece, true))
         .find('.' + CSS.piece)
         .fadeIn(cfg.appearSpeed, onFinish);
     }
@@ -1022,7 +1010,7 @@ function drawPositionInstant() {
   for (var i in CURRENT_POSITION) {
     if (CURRENT_POSITION.hasOwnProperty(i) !== true) continue;
 
-    $('#' + SQUARE_ELS_IDS[i]).append(buildPiece(CURRENT_POSITION[i], 1));
+    $('#' + SQUARE_ELS_IDS[i]).append(buildPiece(CURRENT_POSITION[i]));
   }
 }
 
@@ -1081,7 +1069,7 @@ function setCurrentPosition(position) {
 }
 
 function isXYOnSquare(x, y) {
-
+ 	
   for (var i in SQUARE_ELS_OFFSETS) {
 
     if (SQUARE_ELS_OFFSETS.hasOwnProperty(i) !== true) continue;
@@ -1228,8 +1216,8 @@ function beginDraggingPiece(source, piece, x, y) {
   captureSquareOffsets();
 
   // create the dragged piece
-  draggedPieceEl.find("img").attr('src', buildPieceImgSrc(piece));
-  draggedPieceEl.css({
+  draggedPieceEl.attr('src', buildPieceImgSrc(piece))
+    .css({
       display: '',
       position: 'absolute',
       left: x - (SQUARE_SIZE / 2),
@@ -1733,7 +1721,7 @@ function initDom() {
 
   // create the drag piece
   var draggedPieceId = createId();
-  $('body').append(buildPiece('P', 1, draggedPieceId));
+  $('body').append(buildPiece('P', true, draggedPieceId));
   draggedPieceEl = $('#' + draggedPieceId);
 
   // get the border size

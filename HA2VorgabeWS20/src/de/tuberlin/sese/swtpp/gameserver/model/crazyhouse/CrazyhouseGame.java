@@ -211,39 +211,6 @@ public class CrazyhouseGame extends Game implements Serializable{
 	 ******************************************/
 
 	
-	public int LastSlash(String state) {
-		int n = state.length();
-		int last = 0;
-		for(int i = 0; i < n; i++) {//durch jedes Zeichen itteriren
-			if(state.charAt(i) == 47) {//wenn Slash "/" dann merke Index
-				last = i;
-			}
-		}	
-		//last ist nun der index des letzten slashs
-		return last;
-	}
-	
-	public String nFirstFromString(String state, int n) {
-		String ret = "";
-		for(int i = 0; i < n+1; i++) {
-			ret += state.charAt(i);//kopiere alle zeichen bis zu diesem slash (inklusive)
-		}
-		return ret;	//gebe string bis zum letzten slash zurück
-	}
-	
-	public String nLastFromString(String state, int n) {
-		int ende = state.length()-1;
-		String ret = "";
-		for(int i = 0; i < n; i++) {
-			ret += state.charAt(ende);
-			ende--;
-		}
-		StringBuilder sBuilder = new StringBuilder();
-		sBuilder.append(ret);
-		sBuilder.reverse();
-		return sBuilder.toString();
-	}
-	
 	
 	public void sortRand(char[] Rand) {	
 		Arrays.sort(Rand);
@@ -253,32 +220,56 @@ public class CrazyhouseGame extends Game implements Serializable{
 	
 	@Override
 	public void setBoard(String state) {
+		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
+		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
+		// TODO: implement
+		
+		String[] teiler = state.split("\\/"); // Format aufspliten
+		
+		state = "";			// Hier Spielfeldformat laden
+		for(int i = 0; i<= 7; i++) {
+			for(char buchstaben: teiler[i].toCharArray() ) {
+				state = state + buchstaben;
+			}
+			state = state + "/";
+		}
+		
+		
 		this.Spielfeld = new char[8][8];
 		int x = 0;
 		int y = 7;
-		int n = this.LastSlash(state); // wir wollen erstmal nur das spielfeld aufbauen, also nur die zeichen bis zum letzten slash für forEach loop <--I
-		String lastSlashString = this.nFirstFromString(state, n); // wir bauen einen String der das oben beschriebene erfüllt: ----------------------------I
-		char[] lastSlashArray = lastSlashString.toCharArray(); // char array für for each loop
-		for(char element : lastSlashArray) {
+		for(char element : state.toCharArray()) {
 			if( ((int) element) == 47) {
 				y = y -1;
-				x = 0;	
-			}else if(((((int) element) >= 65 ) && (((int) element) <= 90)) ||  ((((int) element) >= 97 ) && (((int) element) <= 122))) {
+				x = 0;
+			}else if(    ( ( ( (int) element) >= 65 ) && ( ( (int) element) <= 90) ) ||  ( ( ((int) element) >= 97 ) && ( ( (int) element) <= 122) )  ) {
 				this.Spielfeld[x][y] = element;
 				x = x+1;
 			}else {
 				x = x + ( ((int)element) - 48  );
 			}
 		}
-		int letzten = state.length()-1 - n; //bin gerade müde, ka wie genau mit index ya ali
-		this.Rand = new char[letzten];
-		x = 0;
-		for(char c : this.nLastFromString(state, letzten).toCharArray()) {
-			this.Rand[x] = c;
-			x++;
+		
+		
+		if(teiler.length == 9) { 	//wenn es Reserve gibt, Reserve laden
+			Rand = teiler[8].toCharArray();
 		}
-		sortRand(this.Rand); //muss noch implementiert werden
+								
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
+	
+	
 
 	@Override
 	public String getBoard() {
@@ -294,6 +285,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 						ruckgabe = ruckgabe + String.valueOf(counter);
 						counter = 0;
 					}
+					
 					ruckgabe = ruckgabe + this.Spielfeld[x][y];
 				}
 			}
@@ -303,11 +295,23 @@ public class CrazyhouseGame extends Game implements Serializable{
 			}
 			ruckgabe = ruckgabe + "/";
 		}
-		String rand = new String(this.Rand);
-		return ruckgabe + rand;// wir hängen noch Rand ans Ende
+		
+		///////// Jetzt Rand //////////
+		Arrays.sort(this.Rand);
+		ruckgabe = ruckgabe + new String(Rand); 
+		
+				
+		
+		
+		
+		
+		
+		// replace with real implementation
+		//return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
+		return ruckgabe;
 	}
-
-	@Override
+	
+	
 	public boolean tryMove(String moveString, Player player) {
 		// TODO: implement
 		int offset1;
@@ -404,5 +408,4 @@ public class CrazyhouseGame extends Game implements Serializable{
         System.out.print(spiel.getBoard());
         
     }
-
 }

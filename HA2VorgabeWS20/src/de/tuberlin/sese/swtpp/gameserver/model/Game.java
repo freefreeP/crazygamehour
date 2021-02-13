@@ -50,6 +50,7 @@ public abstract class Game implements Serializable {
      **********************************/
     public Game() {
         ID = createID();
+        
     }
 
     /**********************************
