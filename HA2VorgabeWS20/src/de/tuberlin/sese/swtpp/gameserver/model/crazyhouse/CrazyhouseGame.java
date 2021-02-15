@@ -24,6 +24,11 @@ public class CrazyhouseGame extends Game implements Serializable{
 	private Player whitePlayer;
 	char[][] Spielfeld;
 	char[] Rand;
+	int kingw_x;
+	int kingw_y;
+	
+	int kings_x;
+	int kings_y;
 
 	// internal representation of the game state
 	// TODO: insert additional game data here
@@ -209,91 +214,92 @@ public class CrazyhouseGame extends Game implements Serializable{
 	 * !!!!!!!!! To be implemented !!!!!!!!!!!!
 	 ******************************************/
 
-	
-	public int LastSlash(String state) {
-		int n = state.length();
-		int last = 0;
-		for(int i = 0; i < n; i++) {//durch jedes Zeichen itteriren
-			if(state.charAt(i) == 47) {//wenn Slash "/" dann merke Index
-				last = i;
-			}
-		}	
-		//last ist nun der index des letzten slashs
-		return last;
-	}
-	
-	public String nFirstFromString(String state, int n) {
-		String ret = "";
-		for(int i = 0; i < n+1; i++) {
-			ret += state.charAt(i);//kopiere alle zeichen bis zu diesem slash (inklusive)
-		}
-		return ret;	//gebe string bis zum letzten slash zurück
-	}
-	
-	public String nLastFromString(String state, int n) {
-		int ende = state.length()-1;
-		String ret = "";
-		for(int i = 0; i < n; i++) {
-			ret += state.charAt(ende);
-			ende--;
-		}
-		StringBuilder sBuilder = new StringBuilder();
-		sBuilder.append(ret);
-		sBuilder.reverse();
-		return sBuilder.toString();
-	}
-	
-	
 	public void sortRand(char[] Rand) {	
 		Arrays.sort(Rand);
 		this.Rand = Rand;
 	}
 	
 	
-	@Override
+	
+	public void wo_ist_king(int element,int x,int y) { // wir müssen immer wissen wo der king ist
+		if(element  == 75) {						  // auch schon am anfang bei Setboard, es könnte ja Schach(matt) sein
+			kingw_x = x;
+			kingw_y = y;
+		}
+		
+		else if( element  == 107) {
+			kings_x = x;
+			kings_y = y;
+		}
+		
+	}
+	
+	
 	public void setBoard(String state) {
+		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
+		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
+		// TODO: implement
+		
+		String[] teiler = state.split("\\/"); // Format aufspliten
+		
+		state = "";			// Hier Spielfeldformat laden
+		for(int i = 0; i<= 7; i++) {
+			for(char buchstaben: teiler[i].toCharArray() ) {
+				state = state + buchstaben;
+			}
+			state = state + "/";
+		}
+		
+		
 		this.Spielfeld = new char[8][8];
 		int x = 0;
 		int y = 7;
-		int n = this.LastSlash(state); // wir wollen erstmal nur das spielfeld aufbauen, also nur die zeichen bis zum letzten slash für forEach loop <--I
-		String lastSlashString = this.nFirstFromString(state, n); // wir bauen einen String der das oben beschriebene erfüllt: ----------------------------I
-		char[] lastSlashArray = lastSlashString.toCharArray(); // char array für for each loop
-		for(char element : lastSlashArray) {
+		for(char element : state.toCharArray()) {
 			if( ((int) element) == 47) {
 				y = y -1;
-				x = 0;	
-			}else if(((((int) element) >= 65 ) && (((int) element) <= 90)) ||  ((((int) element) >= 97 ) && (((int) element) <= 122))) {
+				x = 0;
+			}else if(    ( ( ( (int) element) >= 65 ) && ( ( (int) element) <= 90) ) ||  ( ( ((int) element) >= 97 ) && ( ( (int) element) <= 122) )  ) {
 				this.Spielfeld[x][y] = element;
+				wo_ist_king(element,x,y); // ist es der King ?
 				x = x+1;
 			}else {
 				x = x + ( ((int)element) - 48  );
 			}
 		}
-		int letzten = state.length()-1 - n; //bin gerade müde, ka wie genau mit index ya ali
-		this.Rand = new char[letzten];
-		x = 0;
-		for(char c : this.nLastFromString(state, letzten).toCharArray()) {
-			this.Rand[x] = c;
-			x++;
+		
+		
+		if(teiler.length == 9) { 	//wenn es Reserve gibt, Reserve laden
+			Rand = teiler[8].toCharArray();
 		}
-		sortRand(this.Rand); //muss noch implementiert werden
+								
+		
+		
+		
 	}
+	
+	
 
 	@Override
 	public String getBoard() {
+		
 		// TODO: implement
 		String ruckgabe = "";
+		boolean check = true;
 		for(int y = 7; y >= 0;y--) {
 			int counter = 0;
 			for(int x = 0; x<=7;x++) {
+				check = true;
 				if(this.Spielfeld[x][y] == 0) {
 					counter++;
-				}else {
-					if(counter > 0 ) {
+					check = false;
+				}else if(counter > 0)  {
 						ruckgabe = ruckgabe + String.valueOf(counter);
 						counter = 0;
-					}
+					
+					
+				} if(check) {
 					ruckgabe = ruckgabe + this.Spielfeld[x][y];
+					check = false;
 				}
 			}
 			if(counter > 0 ) {
@@ -302,8 +308,21 @@ public class CrazyhouseGame extends Game implements Serializable{
 			}
 			ruckgabe = ruckgabe + "/";
 		}
-		String rand = new String(this.Rand);
-		return ruckgabe + rand;// wir hängen noch Rand ans Ende
+		
+		///////// Jetzt Rand //////////
+		if(this.Rand != null) {
+			Arrays.sort(this.Rand);
+			ruckgabe = ruckgabe + new String(Rand); 
+		}
+				
+		
+		
+		
+		
+		
+		// replace with real implementation
+		//return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
+		return ruckgabe;
 	}
 
 	@Override
@@ -480,6 +499,16 @@ public class CrazyhouseGame extends Game implements Serializable{
 			this.sortRand(this.randHinzu(this.Rand, ziel));// wir fügen die entfernte figur zum Rand hinzu und sortieren den Rand
 		}
 		this.Spielfeld[xTo][yTo] = figur;	//wir bewegen den angreifer auf das neue feld
+		if(this.Spielfeld[xTo][yTo] ==75) {
+			kingw_x = xTo;
+			kingw_y = yTo;
+		}
+		
+		if(this.Spielfeld[xTo][yTo] == 107) {
+			kings_x = xTo;
+			kings_y = yTo;
+		}
+		
 		if(figur == 112 && yTo == 0) this.Spielfeld[xTo][yTo] = 113;
 		else if(figur == 80 && yTo == 7) this.Spielfeld[xTo][yTo] = 81;
 		boolean binIchImSchach;
@@ -495,21 +524,61 @@ public class CrazyhouseGame extends Game implements Serializable{
 	}
 	
 	public boolean binIchImSchach(char[][] Spielfeld, Player player) {
+		if(player == this.whitePlayer) {
+			King koenig = new King(kingw_x,kingw_y-1,kingw_x,kingw_y,this.Spielfeld);
+			return koenig.canI();
+		}else if(player == this.blackPlayer) {
+			King koenig = new King(kings_x,kings_y-1,kings_x,kings_y,this.Spielfeld);
+			return koenig.canI();
+		}
 		
 		
 		
 		return false;
 	}
 	
+	
+	
+	public boolean schwarzistMatt() {
+		//binichimSchach
+		King koenig1 = new King(kings_x,kings_y,kings_x,kings_y+1,this.Spielfeld);
+		King koenig2= new King(kings_x,kings_y,kings_x+1,kings_y,this.Spielfeld);
+		King koenig3= new King(kings_x,kings_y,kings_x+1,kings_y+1,this.Spielfeld);
+		King koenig4= new King(kings_x,kings_y,kings_x-1,kings_y,this.Spielfeld);
+		King koenig5= new King(kings_x,kings_y,kings_x,kings_y-1,this.Spielfeld);
+		King koenig6= new King(kings_x,kings_y,kings_x-1,kings_y-1,this.Spielfeld);
+		King koenig7= new King(kings_x,kings_y,kings_x+1,kings_y-1,this.Spielfeld);
+		King koenig8= new King(kings_x,kings_y,kings_x-1,kings_y+1,this.Spielfeld);
+		return(!(koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
+		
+	}
+	
+	public boolean weisistMatt() {
+		King koenig1 = new King(kingw_x,kingw_y,kingw_x,kingw_y+1,this.Spielfeld);
+		King koenig2= new King(kingw_x,kingw_y,kingw_x+1,kingw_y,this.Spielfeld);
+		King koenig3= new King(kingw_x,kingw_y,kingw_x+1,kingw_y+1,this.Spielfeld);
+		King koenig4= new King(kingw_x,kingw_y,kingw_x-1,kingw_y,this.Spielfeld);
+		King koenig5= new King(kingw_x,kingw_y,kingw_x,kingw_y-1,this.Spielfeld);
+		King koenig6= new King(kingw_x,kingw_y,kingw_x-1,kingw_y-1,this.Spielfeld);
+		King koenig7= new King(kingw_x,kingw_y,kingw_x+1,kingw_y-1,this.Spielfeld);
+		King koenig8= new King(kingw_x,kingw_y,kingw_x-1,kingw_y+1,this.Spielfeld);
+		return(!(koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
+	}
+	
+	
 	public boolean istMeinGegnerImMatt( boolean gueltig,Player player) {
 		
-		if(!gueltig) return false;		// wenn mein zug nicht gueltig war dann kann er noch nicht im matt sein
+		//if(!gueltig) return false;		// wenn mein zug nicht gueltig war dann kann er noch nicht im matt sein
 		
 		
 		//hier kommt die untersuchung, wenn schach-matt dann true;
+		if( player == whitePlayer) {
+			return schwarzistMatt();
+		} else {
+			return weisistMatt();
+		}
 		
-		
-		return false;
+		//return false;
 	}
 	
 	
