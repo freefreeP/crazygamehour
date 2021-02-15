@@ -2,8 +2,10 @@ package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Game;
+import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class CrazyhouseGame extends Game implements Serializable{
@@ -32,15 +34,12 @@ public class CrazyhouseGame extends Game implements Serializable{
 
 	public CrazyhouseGame() {
 		super();
-
 		// TODO: initialize internal model if necessary
 		Spielfeld = new char[8][8];
-		this.addPlayer(blackPlayer);
-		this.addPlayer(whitePlayer);
+		//this.addPlayer(blackPlayer);
+		//this.addPlayer(whitePlayer);
 		this.setBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/");
-		this.setNextPlayer(whitePlayer);
-		
-	
+		//this.setNextPlayer(whitePlayer);
 	}
 
 	public String getType() {
@@ -309,92 +308,132 @@ public class CrazyhouseGame extends Game implements Serializable{
 
 	@Override
 	public boolean tryMove(String moveString, Player player) {
-		// TODO: implement
-		int offset1;
-		if(player == this.blackPlayer) offset1 = 0;//wir sind schwarz
-		else offset1 = 32;							//wir sind weiss
-		offset1 = 32; //nur weil Player = null wir hardcoden, dass wir weiss sind (bei schwarz offset1 = 0)
-		int offset2 = offset1-32;
-		
+		int[] offsets= offsets(player);
+		int offset1 = offsets[0], offset2 = offsets[1];
 		boolean gueltig = false;
+		boolean schachMatt = false;
 		if(this.isPlayersTurn(player) && (moveString.matches("[a-h]{1}[1-8]{1}-[a-h]{1}[1-8]{1}") || moveString.matches("[p,n,k,r,b,q]{1}-[a-h]{1}[1-8]{1}") || moveString.matches("[P,B,Q,N,K,R]{1}-[a-h]{1}[1-8]{1}") )){
 			int n = moveString.length();
 			int xTo = moveString.charAt(n-2)-97;
 			int yTo = moveString.charAt(n-1)-49;
 			int moveZu = this.Spielfeld[xTo][yTo];
 			if(moveZu >= 97-offset1 && moveZu <= 122-offset1 || moveZu == 107+offset2) return false;
-			if(moveString.charAt(2) == 45) {
-				int xFrom = moveString.charAt(0)-97;
-				int yFrom = moveString.charAt(1)-49;
-				gueltig = this.realMove(xFrom, yFrom, xTo, yTo,this.Spielfeld[xFrom][yFrom]);
-			}
-			else {
-				char figur = moveString.charAt(0);
-				gueltig = this.realPlace(figur,xTo,yTo);
-			}
+			gueltig = this.Befehl(moveString, xTo, yTo);
+			schachMatt = this.istMeinGegnerImMatt(gueltig, player);
 		}
-		return gueltig;
-	}
+		
+		return this.prepGame(schachMatt,gueltig, moveString, player);
+	}	
 	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// trymove Schwarz
-	
-	public boolean tryMovee(String moveString, Player player) {
-		// TODO: implement
+	public int[] offsets(Player player) {
+		
+		int[] offsets = new int[2];
+		
 		int offset1;
 		if(player == this.blackPlayer) offset1 = 0;//wir sind schwarz
 		else offset1 = 32;							//wir sind weiss
-		offset1 = 0; //nur weil Player = null wir hardcoden, dass wir weiss sind (bei schwarz offset1 = 0)
 		int offset2 = offset1-32;
 		
-		boolean gueltig = false;
-		if(this.isPlayersTurn(player) && (moveString.matches("[a-h]{1}[1-8]{1}-[a-h]{1}[1-8]{1}") || moveString.matches("[p,n,k,r,b,q]{1}-[a-h]{1}[1-8]{1}") || moveString.matches("[P,B,Q,N,K,R]{1}-[a-h]{1}[1-8]{1}") )){
-			int n = moveString.length();
-			int xTo = moveString.charAt(n-2)-97;
-			int yTo = moveString.charAt(n-1)-49;
-			int moveZu = this.Spielfeld[xTo][yTo];
-			if(moveZu >= 97-offset1 && moveZu <= 122-offset1 || moveZu == 107+offset2) return false;
-			if(moveString.charAt(2) == 45) {
-				int xFrom = moveString.charAt(0)-97;
-				int yFrom = moveString.charAt(1)-49;
-				gueltig = this.realMove(xFrom, yFrom, xTo, yTo,this.Spielfeld[xFrom][yFrom]);
-			}
-			else {
-				char figur = moveString.charAt(0);
-				gueltig = this.realPlace(figur,xTo,yTo);
-			}
+		offsets[0] = offset1;
+		offsets[1] = offset2;
+		
+		return offsets;
+	}
+	
+	public boolean Befehl(String moveString,int xTo, int yTo) {
+		
+		boolean gueltig;
+		if(moveString.charAt(2) == 45) {
+			int xFrom = moveString.charAt(0)-97;
+			int yFrom = moveString.charAt(1)-49;
+			gueltig = this.realMove(xFrom, yFrom, xTo, yTo,this.Spielfeld[xFrom][yFrom]);
 		}
+		else {
+			char figur = moveString.charAt(0);
+			gueltig = this.realPlace(figur,xTo,yTo);
+		}
+		
 		return gueltig;
 	}
 	
-	
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// trymove Schwarz
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public boolean prepGame(boolean schachMatt, boolean gueltig, String move, Player player) {
+		
+		if(!gueltig) return false;
+		
+		if(schachMatt) this.finish();
+		
+		List<Move> liste = this.getHistory();
+		
+		Move neuerMove = new Move(move,this.getBoard(),player);
+		
+		liste.add(neuerMove);
+		
+		this.setHistory(liste);
+		//this.nextPlayer = this.getNextPlayer();
+		
+		if(player == this.blackPlayer) {
+			this.nextPlayer = this.whitePlayer;
+		}else {
+			this.nextPlayer = this.blackPlayer;
+		}
+		
+		return true;
+	}
 	
 	
 	public boolean realMove(int xFrom, int yFrom, int xTo, int yTo, int figur) {
-		if(figur == 112 || figur == 80 ){//Bauer
+		if(figur < 97) {
+			return this.weissRealMove(xFrom, yFrom, xTo, yTo, figur);
+		}
+		return this.schwarzRealMove(xFrom, yFrom, xTo, yTo, figur);
+	}
+	
+	public boolean realPlace(char figur, int xTo, int yTo) {//kein move, sondern von ausserhalb platzieren
+		//muss noch gemacht werden
+		int n = this.Rand.length;
+		boolean istImRand = false;
+		for(int i = 0; i < n; i++) {
+			if(this.Rand[i] == figur) { 
+				istImRand = true;
+				this.RandEntferneI(i);
+				break;
+			}
+		}
+		if(this.Spielfeld[xTo][yTo] == 0 && istImRand) {
+			this.Spielfeld[xTo][yTo] = figur;
+		}
+		return false;
+	}
+	
+	
+	public void RandEntferneI(int i) {
+		
+		int n = this.Rand.length;
+		
+		char[] neuerRand = new char[n-1];
+		int k = 0;
+		for(int j = 0; j < n; j++) {
+			if(j == i) continue;
+			neuerRand[k] = this.Rand[j];
+			k++;
+		}
+		this.Rand = neuerRand;
+	}
+	
+	public boolean weissRealMove(int xFrom, int yFrom, int xTo, int yTo, int figur) {
+		if(figur == 80 ){//Bauer
 			Pawn bauer = new Pawn(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(bauer.canI(),xFrom,yFrom,xTo,yTo);
-		}else if(figur == 114 || figur == 82) {//Turm
+		}else if(figur == 82) {//Turm
 			Rook turm = new Rook(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(turm.canI(), xFrom, yFrom, xTo, yTo);
-		}else if(figur == 110 || figur == 78) {//Pferd
+		}else if(figur == 78) {//Pferd
 			Knight pferd = new Knight(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(pferd.canI(), xFrom, yFrom, xTo, yTo);
-		}else if(figur == 98 || figur == 66) {//Leufer
+		}else if(figur == 66) {//Leufer
 			Bishop laeufer = new Bishop(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(laeufer.canI(), xFrom, yFrom, xTo, yTo);
-		}else if(figur == 113 || figur == 81) {
+		}else if(figur == 81) {
 			Queen koenigin = new Queen(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(koenigin.canI(), xFrom, yFrom, xTo, yTo);
 		}
@@ -402,9 +441,26 @@ public class CrazyhouseGame extends Game implements Serializable{
 		return this.feldBearbeiten(koenig.canI(), xFrom, yFrom, xTo, yTo);
 	}
 	
-	public boolean realPlace(char figur, int xTo, int yTo) {//kein move, sondern von ausserhalb platzieren
-		//muss noch gemacht werden
-		return false;
+	
+	public boolean schwarzRealMove(int xFrom, int yFrom, int xTo, int yTo, int figur) {
+		if(figur == 112 ){//Bauer
+			Pawn bauer = new Pawn(xFrom,yFrom,xTo,yTo,this.Spielfeld);
+			return this.feldBearbeiten(bauer.canI(),xFrom,yFrom,xTo,yTo);
+		}else if(figur == 114) {//Turm
+			Rook turm = new Rook(xFrom,yFrom,xTo,yTo,this.Spielfeld);
+			return this.feldBearbeiten(turm.canI(), xFrom, yFrom, xTo, yTo);
+		}else if(figur == 110) {//Pferd
+			Knight pferd = new Knight(xFrom,yFrom,xTo,yTo,this.Spielfeld);
+			return this.feldBearbeiten(pferd.canI(), xFrom, yFrom, xTo, yTo);
+		}else if(figur == 98) {//Leufer
+			Bishop laeufer = new Bishop(xFrom,yFrom,xTo,yTo,this.Spielfeld);
+			return this.feldBearbeiten(laeufer.canI(), xFrom, yFrom, xTo, yTo);
+		}else if(figur == 113) {
+			Queen koenigin = new Queen(xFrom,yFrom,xTo,yTo,this.Spielfeld);
+			return this.feldBearbeiten(koenigin.canI(), xFrom, yFrom, xTo, yTo);
+		}
+		King koenig = new King(xFrom,yFrom,xTo,yTo,this.Spielfeld);
+		return this.feldBearbeiten(koenig.canI(), xFrom, yFrom, xTo, yTo);
 	}
 	
 	public char[] randHinzu(char[] Rand, char Figur) {
@@ -416,37 +472,63 @@ public class CrazyhouseGame extends Game implements Serializable{
 	
 	public boolean feldBearbeiten(boolean machen,int xFrom,int yFrom,int xTo,int yTo) {
 		if(!machen) return false;
-		
 		char figur = this.Spielfeld[xFrom][yFrom];	//wer bewegt sich?
 		this.Spielfeld[xFrom][yFrom] = 0;			//die figur wird sich bewegen und nicht mehr am gleichen platz bleiben
 		char ziel = this.Spielfeld[xTo][yTo];	//wer wird angegriffen?
-		
+		char[] alterRand = this.Rand;
 		if(ziel != 0) {	//wir haben einen gegner
 			this.sortRand(this.randHinzu(this.Rand, ziel));// wir fügen die entfernte figur zum Rand hinzu und sortieren den Rand
 		}
 		this.Spielfeld[xTo][yTo] = figur;	//wir bewegen den angreifer auf das neue feld
 		if(figur == 112 && yTo == 0) this.Spielfeld[xTo][yTo] = 113;
 		else if(figur == 80 && yTo == 7) this.Spielfeld[xTo][yTo] = 81;
-		
+		boolean binIchImSchach;
+		if(figur < 97) binIchImSchach = this.binIchImSchach(this.Spielfeld, this.whitePlayer);
+		else binIchImSchach = this.binIchImSchach(this.Spielfeld, this.whitePlayer);
+		if(binIchImSchach) {
+			this.Spielfeld[xFrom][yFrom] = figur;
+			this.Spielfeld[xTo][yTo] = ziel;
+			this.Rand = alterRand;
+			return false;
+		}
 		return true;
 	}
 	
+	public boolean binIchImSchach(char[][] Spielfeld, Player player) {
+		
+		
+		
+		return false;
+	}
 	
-	public static void main(String[] args) {
+	public boolean istMeinGegnerImMatt( boolean gueltig,Player player) {
+		
+		if(!gueltig) return false;		// wenn mein zug nicht gueltig war dann kann er noch nicht im matt sein
+		
+		
+		//hier kommt die untersuchung, wenn schach-matt dann true;
+		
+		
+		return false;
+	}
+	
+	
+	
+	
+	/*public static void main(String[] args) {
         CrazyhouseGame spiel = new CrazyhouseGame();
-        String brett = "rnbqkbnr/p6P/8/8/8/8/4p3/RNBQKBNR/";
+        String brett = "rnbqkbnr/p6P/8/1b6/8/8/4p3/RNBQKBNR/";
         spiel.setBoard(brett);
        
         Player weis = null;
-        Player schwarz = null;
         String ali = spiel.getBoard();
         System.out.print(ali + "\n");
-        spiel.tryMovee("e7-e6", schwarz);
-        spiel.tryMovee("e8-e7", schwarz);
-        System.out.print(spiel.tryMovee("e6-d5", schwarz));
+        
+        spiel.tryMove("e1-e2", weis);
         
         System.out.print(spiel.getBoard());
         
-    }
+        
+    }*/
 
 }
