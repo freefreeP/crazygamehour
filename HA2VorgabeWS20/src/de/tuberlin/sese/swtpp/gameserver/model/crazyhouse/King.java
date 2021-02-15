@@ -406,7 +406,7 @@ return true;
 
 public boolean w_rasiert_mich_pferd(int farbe,int xTo, int yTo) {
 	if(w_rasiert_mich_pferd8( farbe, xTo,  yTo)==false) return false;
-	if(w_rasiert_mich_pferd16( farbe, xTo,  yTo)==false) return false;
+	//if(w_rasiert_mich_pferd16( farbe, xTo,  yTo)==false) return false;
 	
 	return true;
 }
