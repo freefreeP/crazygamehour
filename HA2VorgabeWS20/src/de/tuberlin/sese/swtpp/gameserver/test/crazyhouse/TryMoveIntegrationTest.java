@@ -76,6 +76,70 @@ public class TryMoveIntegrationTest {
 		assertMove("b2-b7",true,false);
 		assertGameState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true,false,false);
 	}
+	
+	@Test
+	public void schwarzAlsErstesTest() {
+		startGame("rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR/",false);
+		assertMove("e7-e6",false,true);
+		assertGameState("rnbqkbnr/pppp1ppp/4p3/8/3P4/8/PPP1PPPP/RNBQKBNR/",true,false,false);
+	}
+	
+	
+	@Test
+	public void wbeinsnachvorne() {
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true);
+		assertMove("b2-b3",true,true);
+		assertGameState("rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR/",false,false,false);
+	}
+	
+	@Test
+	public void rookTestKannLinieSeite() {
+		startGame("rnbqkbn1/8/8/2P1r3/8/4P3/8/RNBQKBNR/", false);
+		assertMove("e5-c5",false,true);
+		assertGameState("rnbqkbn1/8/8/2r5/8/4P3/8/RNBQKBNR/P",true,false,false);
+	}
+	
+	@Test
+	public void rookTestKannLinieHoehe() {
+		startGame("rnbqkbn1/8/8/2P1r3/8/4P3/8/RNBQKBNR/", false);
+		assertMove("e5-e3",false,true);
+		assertGameState("rnbqkbn1/8/8/2P5/8/4r3/8/RNBQKBNR/P",true,false,false);
+	}
+	
+	@Test
+	public void rookTestKannNichtKomplett() {
+		startGame("rnbqkbn1/8/8/2P1r3/8/4P3/8/RNBQKBNR/", false);
+		assertMove("e5-f6",false,false);
+		assertGameState("rnbqkbn1/8/8/2P1r3/8/4P3/8/RNBQKBNR/",false,false,false);
+	}
+	
+	
+	@Test
+	public void rookTestKannLinieHoeheNichtDazwischenEtwas() {
+		startGame("rnbqkbn1/8/8/2P1r3/4P3/4P3/8/RNBQKBNR/", false);
+		assertMove("e5-e3",false,false);
+		assertGameState("rnbqkbn1/8/8/2P1r3/4P3/4P3/8/RNBQKBNR/",false,false,false);
+	}
+	
+	@Test
+	public void rookTestKannLinieSeiteNichtDazwischenEtwas() {
+		startGame("rnbqkbn1/8/8/2PPr3/8/4P3/8/RNBQKBNR/", false);
+		assertMove("e5-c5",false,false);
+		assertGameState("rnbqkbn1/8/8/2PPr3/8/4P3/8/RNBQKBNR/",false,false,false);
+	}
+	
+	@Test
+	public void rookTestBleibtStehen() {
+		startGame("rnbqkbn1/8/8/2PPr3/8/4P3/8/RNBQKBNR/", false);
+		assertMove("e5-e5",false,false);
+		assertGameState("rnbqkbn1/8/8/2PPr3/8/4P3/8/RNBQKBNR/",false,false,false);
+	}
+	
+	
+	
+	
+	
+	
 
 	//TODO: implement test cases of same kind as example here
 }
