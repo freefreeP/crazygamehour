@@ -31,7 +31,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 	int kings_y;
 
 	// internal representation of the game state
-	// TODO: insert additional game data here
+	// TODOa: insert additional game data here
 
 	/************************
 	 * constructors
@@ -39,7 +39,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 
 	public CrazyhouseGame() {
 		super();
-		// TODO: initialize internal model if necessary
+		// TODOa: initialize internal model if necessary
 		Spielfeld = new char[8][8];
 		//this.addPlayer(blackPlayer);
 		//this.addPlayer(whitePlayer);
@@ -214,11 +214,45 @@ public class CrazyhouseGame extends Game implements Serializable{
 	 * !!!!!!!!! To be implemented !!!!!!!!!!!!
 	 ******************************************/
 
+	
+	public int LastSlash(String state) {
+		int n = state.length();
+		int last = 0;
+		for(int i = 0; i < n; i++) {//durch jedes Zeichen itteriren
+			if(state.charAt(i) == 47) {//wenn Slash "/" dann merke Index
+				last = i;
+			}
+		}	
+		//last ist nun der index des letzten slashs
+		return last;
+	}
+	
+	public String nFirstFromString(String state, int n) {
+		String ret = "";
+		for(int i = 0; i < n+1; i++) {
+			ret += state.charAt(i);//kopiere alle zeichen bis zu diesem slash (inklusive)
+		}
+		return ret;	//gebe string bis zum letzten slash zurück
+	}
+	
+	public String nLastFromString(String state, int n) {
+		int ende = state.length()-1;
+		String ret = "";
+		for(int i = 0; i < n; i++) {
+			ret += state.charAt(ende);
+			ende--;
+		}
+		StringBuilder sBuilder = new StringBuilder();
+		sBuilder.append(ret);
+		sBuilder.reverse();
+		return sBuilder.toString();
+	}
+	
+	
 	public void sortRand(char[] Rand) {	
 		Arrays.sort(Rand);
 		this.Rand = Rand;
 	}
-	
 	
 	
 	public void wo_ist_king(int element,int x,int y) { // wir müssen immer wissen wo der king ist
@@ -276,11 +310,9 @@ public class CrazyhouseGame extends Game implements Serializable{
 		
 		
 	}
-	
-	
 
 	@Override
-	public String getBoard() {
+public String getBoard() {
 		
 		// TODO: implement
 		String ruckgabe = "";
@@ -331,13 +363,13 @@ public class CrazyhouseGame extends Game implements Serializable{
 		int offset1 = offsets[0], offset2 = offsets[1];
 		boolean gueltig = false;
 		boolean schachMatt = false;
-		if(this.isPlayersTurn(player) && (moveString.matches("[a-h]{1}[1-8]{1}-[a-h]{1}[1-8]{1}") || moveString.matches("[p,n,k,r,b,q]{1}-[a-h]{1}[1-8]{1}") || moveString.matches("[P,B,Q,N,K,R]{1}-[a-h]{1}[1-8]{1}") )){
+		if(this.isPlayersTurn(player)){
 			int n = moveString.length();
 			int xTo = moveString.charAt(n-2)-97;
 			int yTo = moveString.charAt(n-1)-49;
 			int moveZu = this.Spielfeld[xTo][yTo];
 			if(moveZu >= 97-offset1 && moveZu <= 122-offset1 || moveZu == 107+offset2) return false;
-			gueltig = this.Befehl(moveString, xTo, yTo);
+			gueltig = this.Befehl(moveString, xTo, yTo, offset1, player);
 			schachMatt = this.istMeinGegnerImMatt(gueltig, player);
 		}
 		
@@ -359,17 +391,17 @@ public class CrazyhouseGame extends Game implements Serializable{
 		return offsets;
 	}
 	
-	public boolean Befehl(String moveString,int xTo, int yTo) {
+	public boolean Befehl(String moveString,int xTo, int yTo, int offset1, Player player) {
 		
 		boolean gueltig;
 		if(moveString.charAt(2) == 45) {
 			int xFrom = moveString.charAt(0)-97;
 			int yFrom = moveString.charAt(1)-49;
-			gueltig = this.realMove(xFrom, yFrom, xTo, yTo,this.Spielfeld[xFrom][yFrom]);
+			gueltig = this.realMove(xFrom, yFrom, xTo, yTo, offset1);
 		}
 		else {
 			char figur = moveString.charAt(0);
-			gueltig = this.realPlace(figur,xTo,yTo);
+			gueltig = this.realPlace(figur,xTo,yTo, player);
 		}
 		
 		return gueltig;
@@ -388,8 +420,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 		liste.add(neuerMove);
 		
 		this.setHistory(liste);
-		//this.nextPlayer = this.getNextPlayer();
-		
+
 		if(player == this.blackPlayer) {
 			this.nextPlayer = this.whitePlayer;
 		}else {
@@ -400,18 +431,18 @@ public class CrazyhouseGame extends Game implements Serializable{
 	}
 	
 	
-	public boolean realMove(int xFrom, int yFrom, int xTo, int yTo, int figur) {
+	/*public boolean realMove(int xFrom, int yFrom, int xTo, int yTo, int figur) {
 		if(figur < 97) {
 			return this.weissRealMove(xFrom, yFrom, xTo, yTo, figur);
 		}
 		return this.schwarzRealMove(xFrom, yFrom, xTo, yTo, figur);
-	}
+	}*/
 	
-	public boolean realPlace(char figur, int xTo, int yTo) {//kein move, sondern von ausserhalb platzieren
-		//muss noch gemacht werden
+	public boolean realPlace(char figur, int xTo, int yTo, Player player) {//kein move, sondern von ausserhalb platzieren
 		int n = this.Rand.length;
 		boolean istImRand = false;
-		for(int i = 0; i < n; i++) {
+		int i;
+		for(i = 0; i < n; i++) {
 			if(this.Rand[i] == figur) { 
 				istImRand = true;
 				this.RandEntferneI(i);
@@ -419,7 +450,14 @@ public class CrazyhouseGame extends Game implements Serializable{
 			}
 		}
 		if(this.Spielfeld[xTo][yTo] == 0 && istImRand) {
-			this.Spielfeld[xTo][yTo] = figur;
+			char[][] neuesFeld = this.Spielfeld;
+			neuesFeld[xTo][yTo] = figur;
+			boolean binIchImSchach = this.binIchImSchach(neuesFeld, player);
+			if(!binIchImSchach) {
+				this.Spielfeld = neuesFeld;
+				this.RandEntferneI(i);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -439,42 +477,21 @@ public class CrazyhouseGame extends Game implements Serializable{
 		this.Rand = neuerRand;
 	}
 	
-	public boolean weissRealMove(int xFrom, int yFrom, int xTo, int yTo, int figur) {
-		if(figur == 80 ){//Bauer
+	public boolean realMove(int xFrom, int yFrom, int xTo, int yTo, int offset1) {
+		int figur = this.Spielfeld[xFrom][yFrom];
+		if(figur == 112 - offset1 ){//Bauer
 			Pawn bauer = new Pawn(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(bauer.canI(),xFrom,yFrom,xTo,yTo);
-		}else if(figur == 82) {//Turm
+		}else if(figur == 114- offset1) {//Turm
 			Rook turm = new Rook(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(turm.canI(), xFrom, yFrom, xTo, yTo);
-		}else if(figur == 78) {//Pferd
+		}else if(figur == 110- offset1) {//Pferd
 			Knight pferd = new Knight(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(pferd.canI(), xFrom, yFrom, xTo, yTo);
-		}else if(figur == 66) {//Leufer
+		}else if(figur == 98- offset1) {//Leufer
 			Bishop laeufer = new Bishop(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(laeufer.canI(), xFrom, yFrom, xTo, yTo);
-		}else if(figur == 81) {
-			Queen koenigin = new Queen(xFrom,yFrom,xTo,yTo,this.Spielfeld);
-			return this.feldBearbeiten(koenigin.canI(), xFrom, yFrom, xTo, yTo);
-		}
-		King koenig = new King(xFrom,yFrom,xTo,yTo,this.Spielfeld);
-		return this.feldBearbeiten(koenig.canI(), xFrom, yFrom, xTo, yTo);
-	}
-	
-	
-	public boolean schwarzRealMove(int xFrom, int yFrom, int xTo, int yTo, int figur) {
-		if(figur == 112 ){//Bauer
-			Pawn bauer = new Pawn(xFrom,yFrom,xTo,yTo,this.Spielfeld);
-			return this.feldBearbeiten(bauer.canI(),xFrom,yFrom,xTo,yTo);
-		}else if(figur == 114) {//Turm
-			Rook turm = new Rook(xFrom,yFrom,xTo,yTo,this.Spielfeld);
-			return this.feldBearbeiten(turm.canI(), xFrom, yFrom, xTo, yTo);
-		}else if(figur == 110) {//Pferd
-			Knight pferd = new Knight(xFrom,yFrom,xTo,yTo,this.Spielfeld);
-			return this.feldBearbeiten(pferd.canI(), xFrom, yFrom, xTo, yTo);
-		}else if(figur == 98) {//Leufer
-			Bishop laeufer = new Bishop(xFrom,yFrom,xTo,yTo,this.Spielfeld);
-			return this.feldBearbeiten(laeufer.canI(), xFrom, yFrom, xTo, yTo);
-		}else if(figur == 113) {
+		}else if(figur == 113- offset1) {
 			Queen koenigin = new Queen(xFrom,yFrom,xTo,yTo,this.Spielfeld);
 			return this.feldBearbeiten(koenigin.canI(), xFrom, yFrom, xTo, yTo);
 		}
@@ -499,21 +516,11 @@ public class CrazyhouseGame extends Game implements Serializable{
 			this.sortRand(this.randHinzu(this.Rand, ziel));// wir fügen die entfernte figur zum Rand hinzu und sortieren den Rand
 		}
 		this.Spielfeld[xTo][yTo] = figur;	//wir bewegen den angreifer auf das neue feld
-		if(this.Spielfeld[xTo][yTo] ==75) {
-			kingw_x = xTo;
-			kingw_y = yTo;
-		}
-		
-		if(this.Spielfeld[xTo][yTo] == 107) {
-			kings_x = xTo;
-			kings_y = yTo;
-		}
-		
 		if(figur == 112 && yTo == 0) this.Spielfeld[xTo][yTo] = 113;
 		else if(figur == 80 && yTo == 7) this.Spielfeld[xTo][yTo] = 81;
 		boolean binIchImSchach;
 		if(figur < 97) binIchImSchach = this.binIchImSchach(this.Spielfeld, this.whitePlayer);
-		else binIchImSchach = this.binIchImSchach(this.Spielfeld, this.whitePlayer);
+		else binIchImSchach = this.binIchImSchach(this.Spielfeld, this.blackPlayer);
 		if(binIchImSchach) {
 			this.Spielfeld[xFrom][yFrom] = figur;
 			this.Spielfeld[xTo][yTo] = ziel;
@@ -536,8 +543,6 @@ public class CrazyhouseGame extends Game implements Serializable{
 		
 		return false;
 	}
-	
-	
 	
 	public boolean schwarzistMatt() {
 		//binichimSchach
@@ -568,7 +573,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 	
 	public boolean istMeinGegnerImMatt( boolean gueltig,Player player) {
 		
-		//if(!gueltig) return false;		// wenn mein zug nicht gueltig war dann kann er noch nicht im matt sein
+		if(!gueltig) return false;		// wenn mein zug nicht gueltig war dann kann er noch nicht im matt sein
 		
 		
 		//hier kommt die untersuchung, wenn schach-matt dann true;
@@ -580,9 +585,6 @@ public class CrazyhouseGame extends Game implements Serializable{
 		
 		//return false;
 	}
-	
-	
-	
 	
 	/*public static void main(String[] args) {
         CrazyhouseGame spiel = new CrazyhouseGame();
