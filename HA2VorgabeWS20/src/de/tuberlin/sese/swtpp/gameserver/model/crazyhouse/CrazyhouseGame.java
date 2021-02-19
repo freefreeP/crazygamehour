@@ -215,40 +215,6 @@ public class CrazyhouseGame extends Game implements Serializable{
 	 ******************************************/
 
 	
-	public int LastSlash(String state) {
-		int n = state.length();
-		int last = 0;
-		for(int i = 0; i < n; i++) {//durch jedes Zeichen itteriren
-			if(state.charAt(i) == 47) {//wenn Slash "/" dann merke Index
-				last = i;
-			}
-		}	
-		//last ist nun der index des letzten slashs
-		return last;
-	}
-	
-	public String nFirstFromString(String state, int n) {
-		String ret = "";
-		for(int i = 0; i < n+1; i++) {
-			ret += state.charAt(i);//kopiere alle zeichen bis zu diesem slash (inklusive)
-		}
-		return ret;	//gebe string bis zum letzten slash zur�ck
-	}
-	
-	public String nLastFromString(String state, int n) {
-		int ende = state.length()-1;
-		String ret = "";
-		for(int i = 0; i < n; i++) {
-			ret += state.charAt(ende);
-			ende--;
-		}
-		StringBuilder sBuilder = new StringBuilder();
-		sBuilder.append(ret);
-		sBuilder.reverse();
-		return sBuilder.toString();
-	}
-	
-	
 	public void sortRand(char[] Rand) {	
 		Arrays.sort(Rand);
 		this.Rand = Rand;

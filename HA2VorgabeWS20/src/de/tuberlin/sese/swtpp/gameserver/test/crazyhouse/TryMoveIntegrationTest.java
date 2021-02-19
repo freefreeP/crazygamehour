@@ -851,7 +851,7 @@ public class TryMoveIntegrationTest {
 	
 	@Test
 	public void w_rasiert_mich_knight_test() {
-		startGame("8/n7/8/8/8/8/8/8/",true);
+		startGame("8/n5n1/8/3K4/8/n5n1/8/8/",true);
 		assertMove("d5-c6",true,false);
 		assertGameState("8/n5n1/8/3K4/8/n5n1/8/8/",true,false,false);
 	}
@@ -873,6 +873,173 @@ public class TryMoveIntegrationTest {
 		assertMove("d5-e4",true,false);
 		assertGameState("8/n5n1/8/3K4/8/n5n1/8/8/",true,false,false);
 	}
+	
+	
+	@Test
+	public void w_rasiert_mich_knight_test4() {
+		startGame("1n3n2/8/8/3K4/8/8/1n3n2/8",true);
+		assertMove("d5-c6",true,false);
+		assertGameState("1n3n2/8/8/3K4/8/8/1n3n2/8/",true,false,false);
+	}
+	@Test
+	public void w_rasiert_mich_knight_test5() {
+		startGame("1n3n2/8/8/3K4/8/8/1n3n2/8",true);
+		assertMove("d5-e6",true,false);
+		assertGameState("1n3n2/8/8/3K4/8/8/1n3n2/8/",true,false,false);
+	}
+	@Test
+	public void w_rasiert_mich_knight_test6() {
+		startGame("1n3n2/8/8/3K4/8/8/1n3n2/8",true);
+		assertMove("d5-c4",true,false);
+		assertGameState("1n3n2/8/8/3K4/8/8/1n3n2/8/",true,false,false);
+	}
+	@Test
+	public void w_rasiert_mich_knight_test7() {
+		startGame("1n3n2/8/8/3K4/8/8/1n3n2/8",true);
+		assertMove("d5-e4",true,false);
+		assertGameState("1n3n2/8/8/3K4/8/8/1n3n2/8/",true,false,false);
+	}
+	
+	
+	
+	///////////////////////////////////////////////////////
+	
+	
+	@Test
+	public void s_rasiert_mich_knight_test() {
+		startGame("8/N5N1/8/3k4/8/N5N1/8/8/",false);
+		assertMove("d5-c6",false,false);
+		assertGameState("8/N5N1/8/3k4/8/N5N1/8/8/",false,false,false);
+	}
+	@Test
+	public void s_rasiert_mich_knight_test1() {
+		startGame("8/N5N1/8/3k4/8/N5N1/8/8/",false);
+		assertMove("d5-e6",false,false);
+		assertGameState("8/N5N1/8/3k4/8/N5N1/8/8/",false,false,false);
+	}
+	@Test
+	public void s_rasiert_mich_knight_test2() {
+		startGame("8/N5N1/8/3k4/8/N5N1/8/8/",false);
+		assertMove("d5-c4",false,false);
+		assertGameState("8/N5N1/8/3k4/8/N5N1/8/8/",false,false,false);
+	}
+	@Test
+	public void s_rasiert_mich_knight_test3() {
+		startGame("8/N5N1/8/3k4/8/N5N1/8/8/",false);
+		assertMove("d5-e4",false,false);
+		assertGameState("8/N5N1/8/3k4/8/N5N1/8/8/",false,false,false);
+	}
+	
+	
+	@Test
+	public void s_rasiert_mich_knight_test4() {
+		startGame("1N3N2/8/8/3k4/8/8/1N3N2/8",false);
+		assertMove("d5-c6",false,false);
+		assertGameState("1N3N2/8/8/3k4/8/8/1N3N2/8/",false,false,false);
+	}
+	@Test
+	public void s_rasiert_mich_knight_test5() {
+		startGame("1N3N2/8/8/3k4/8/8/1N3N2/8",false);
+		assertMove("d5-e6",false,false);
+		assertGameState("1N3N2/8/8/3k4/8/8/1N3N2/8/",false,false,false);
+	}
+	@Test
+	public void s_rasiert_mich_knight_test6() {
+		startGame("1N3N2/8/8/3k4/8/8/1N3N2/8",false);
+		assertMove("d5-c4",false,false);
+		assertGameState("1N3N2/8/8/3k4/8/8/1N3N2/8/",false,false,false);
+	}
+	@Test
+	public void s_rasiert_mich_knight_test7() {
+		startGame("1N3N2/8/8/3k4/8/8/1N3N2/8",false);
+		assertMove("d5-e4",false,false);
+		assertGameState("1N3N2/8/8/3k4/8/8/1N3N2/8/",false,false,false);
+	}
+	
+	///// könig vs könig
+	
+	
+	@Test
+	public void w_rasiert_mich_könig_test(){
+		startGame("8/3k4/8/1k1K1k2/8/3k4/8/8/",true);
+		assertMove("d5-c5",true,false);
+		assertGameState("8/3k4/8/1k1K1k2/8/3k4/8/8/",true,false,false);
+	}
+	
+	@Test
+	public void w_rasiert_mich_könig_test2(){
+		startGame("8/3k4/8/1k1K1k2/8/3k4/8/8/",true);
+		assertMove("d5-e5",true,false);
+		assertGameState("8/3k4/8/1k1K1k2/8/3k4/8/8/",true,false,false);
+	}
+	@Test
+	public void w_rasiert_mich_könig_test1(){
+		startGame("8/3k4/8/1k1K1k2/8/3k4/8/8/",true);
+		assertMove("d5-d4",true,false);
+		assertGameState("8/3k4/8/1k1K1k2/8/3k4/8/8/",true,false,false);
+	}
+	@Test
+	public void w_rasiert_mich_könig_test3(){
+		startGame("8/3k4/8/1k1K1k2/8/3k4/8/8/",true);
+		assertMove("d5-d6",true,false);
+		assertGameState("8/3k4/8/1k1K1k2/8/3k4/8/8/",true,false,false);
+	}
+	
+	
+	@Test
+	public void w_rasiert_mich_könig_test4(){
+		startGame("8/8/8/3K4/8/1k3k2/8/8/",true);
+		assertMove("d5-c4",true,false);
+		assertGameState("8/8/8/3K4/8/1k3k2/8/8/",true,false,false);
+	}
+	@Test
+	public void w_rasiert_mich_könig_test5(){
+		startGame("8/8/8/3K4/8/1k3k2/8/8/",true);
+		assertMove("d5-e4",true,false);
+		assertGameState("8/8/8/3K4/8/1k3k2/8/8/",true,false,false);
+	}
+	
+	@Test
+	public void s_rasiert_mich_könig_test(){
+		startGame("8/3K4/8/1K1k1K2/8/3K4/8/8/",false);
+		assertMove("d5-c5",false,false);
+		assertGameState("8/3K4/8/1K1k1K2/8/3K4/8/8/",false,false,false);
+	}
+	
+	@Test
+	public void s_rasiert_mich_könig_test2(){
+		startGame("8/3K4/8/1K1k1K2/8/3K4/8/8/",false);
+		assertMove("d5-e5",false,false);
+		assertGameState("8/3K4/8/1K1k1K2/8/3K4/8/8/",false,false,false);
+	}
+	@Test
+	public void s_rasiert_mich_könig_test1(){
+		startGame("8/3K4/8/1K1k1K2/8/3K4/8/8/",false);
+		assertMove("d5-d4",false,false);
+		assertGameState("8/3K4/8/1K1k1K2/8/3K4/8/8/",false,false,false);
+	}
+	@Test
+	public void s_rasiert_mich_könig_test3(){
+		startGame("8/3K4/8/1K1k1K2/8/3K4/8/8/",false);
+		assertMove("d5-d6",false,false);
+		assertGameState("8/3K4/8/1K1k1K2/8/3K4/8/8/",false,false,false);
+	}
+	
+	
+	@Test
+	public void s_rasiert_mich_könig_test4(){
+		startGame("8/1K3K2/8/3k4/8/8/8/8/",false);
+		assertMove("d5-c6",false,false);
+		assertGameState("8/1K3K2/8/3k4/8/8/8/8/",false,false,false);
+	}
+	@Test
+	public void s_rasiert_mich_könig_test5(){
+		startGame("8/1K3K2/8/3k4/8/8/8/8/",false);
+		assertMove("d5-e6",false,false);
+		assertGameState("8/1K3K2/8/3k4/8/8/8/8/",false,false,false);
+	}
+	
+	
 	
 
 	
