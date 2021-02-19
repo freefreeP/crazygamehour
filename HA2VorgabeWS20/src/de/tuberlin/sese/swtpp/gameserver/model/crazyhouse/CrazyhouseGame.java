@@ -232,7 +232,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 		for(int i = 0; i < n+1; i++) {
 			ret += state.charAt(i);//kopiere alle zeichen bis zu diesem slash (inklusive)
 		}
-		return ret;	//gebe string bis zum letzten slash zurück
+		return ret;	//gebe string bis zum letzten slash zurï¿½ck
 	}
 	
 	public String nLastFromString(String state, int n) {
@@ -254,9 +254,8 @@ public class CrazyhouseGame extends Game implements Serializable{
 		this.Rand = Rand;
 	}
 	
-	
-	public void wo_ist_king(int element,int x,int y) { // wir müssen immer wissen wo der king ist
-		if(element  == 75) {						  // auch schon am anfang bei Setboard, es könnte ja Schach(matt) sein
+	public void wo_ist_king(int element,int x,int y) { // wir mï¿½ssen immer wissen wo der king ist
+		if(element  == 75) {						  // auch schon am anfang bei Setboard, es kï¿½nnte ja Schach(matt) sein
 			kingw_x = x;
 			kingw_y = y;
 		}
@@ -269,13 +268,9 @@ public class CrazyhouseGame extends Game implements Serializable{
 	}
 	
 	
+	@Override
 	public void setBoard(String state) {
-		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
-		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
-		// TODO: implement
-		
 		String[] teiler = state.split("\\/"); // Format aufspliten
-		
 		state = "";			// Hier Spielfeldformat laden
 		for(int i = 0; i<= 7; i++) {
 			for(char buchstaben: teiler[i].toCharArray() ) {
@@ -283,8 +278,6 @@ public class CrazyhouseGame extends Game implements Serializable{
 			}
 			state = state + "/";
 		}
-		
-		
 		this.Spielfeld = new char[8][8];
 		int x = 0;
 		int y = 7;
@@ -300,19 +293,15 @@ public class CrazyhouseGame extends Game implements Serializable{
 				x = x + ( ((int)element) - 48  );
 			}
 		}
-		
-		
 		if(teiler.length == 9) { 	//wenn es Reserve gibt, Reserve laden
 			Rand = teiler[8].toCharArray();
+		}else {
+			Rand = new char[0];
 		}
-								
-		
-		
-		
 	}
 
 	@Override
-public String getBoard() {
+	public String getBoard() {
 		
 		// TODO: implement
 		String ruckgabe = "";
@@ -411,7 +400,6 @@ public String getBoard() {
 		
 		if(!gueltig) return false;
 		
-		if(schachMatt) this.finish();
 		
 		List<Move> liste = this.getHistory();
 		
@@ -420,7 +408,13 @@ public String getBoard() {
 		liste.add(neuerMove);
 		
 		this.setHistory(liste);
-
+		
+		if(schachMatt) {
+			this.finish();
+			this.regularGameEnd(player);
+			return true;
+		}
+		
 		if(player == this.blackPlayer) {
 			this.nextPlayer = this.whitePlayer;
 		}else {
@@ -430,14 +424,6 @@ public String getBoard() {
 		return true;
 	}
 	
-	
-	/*public boolean realMove(int xFrom, int yFrom, int xTo, int yTo, int figur) {
-		if(figur < 97) {
-			return this.weissRealMove(xFrom, yFrom, xTo, yTo, figur);
-		}
-		return this.schwarzRealMove(xFrom, yFrom, xTo, yTo, figur);
-	}*/
-	
 	public boolean realPlace(char figur, int xTo, int yTo, Player player) {//kein move, sondern von ausserhalb platzieren
 		int n = this.Rand.length;
 		boolean istImRand = false;
@@ -445,7 +431,6 @@ public String getBoard() {
 		for(i = 0; i < n; i++) {
 			if(this.Rand[i] == figur) { 
 				istImRand = true;
-				this.RandEntferneI(i);
 				break;
 			}
 		}
@@ -453,7 +438,7 @@ public String getBoard() {
 			char[][] neuesFeld = this.Spielfeld;
 			neuesFeld[xTo][yTo] = figur;
 			boolean binIchImSchach = this.binIchImSchach(neuesFeld, player);
-			if(!binIchImSchach) {
+			if(binIchImSchach) {
 				this.Spielfeld = neuesFeld;
 				this.RandEntferneI(i);
 				return true;
@@ -513,14 +498,14 @@ public String getBoard() {
 		char ziel = this.Spielfeld[xTo][yTo];	//wer wird angegriffen?
 		char[] alterRand = this.Rand;
 		if(ziel != 0) {	//wir haben einen gegner
-			this.sortRand(this.randHinzu(this.Rand, ziel));// wir fügen die entfernte figur zum Rand hinzu und sortieren den Rand
+			this.sortRand(this.randHinzu(this.Rand, ziel));// wir fï¿½gen die entfernte figur zum Rand hinzu und sortieren den Rand
 		}
 		this.Spielfeld[xTo][yTo] = figur;	//wir bewegen den angreifer auf das neue feld
 		if(figur == 112 && yTo == 0) this.Spielfeld[xTo][yTo] = 113;
 		else if(figur == 80 && yTo == 7) this.Spielfeld[xTo][yTo] = 81;
 		boolean binIchImSchach;
-		if(figur < 97) binIchImSchach = this.binIchImSchach(this.Spielfeld, this.whitePlayer);
-		else binIchImSchach = this.binIchImSchach(this.Spielfeld, this.blackPlayer);
+		if(figur < 97) binIchImSchach = !this.binIchImSchach(this.Spielfeld, this.whitePlayer);
+		else binIchImSchach = !this.binIchImSchach(this.Spielfeld, this.blackPlayer);
 		if(binIchImSchach) {
 			this.Spielfeld[xFrom][yFrom] = figur;
 			this.Spielfeld[xTo][yTo] = ziel;
@@ -533,19 +518,15 @@ public String getBoard() {
 	public boolean binIchImSchach(char[][] Spielfeld, Player player) {
 		if(player == this.whitePlayer) {
 			King koenig = new King(kingw_x,kingw_y-1,kingw_x,kingw_y,this.Spielfeld);
-			return koenig.canI();
-		}else if(player == this.blackPlayer) {
-			King koenig = new King(kings_x,kings_y-1,kings_x,kings_y,this.Spielfeld);
-			return koenig.canI();
+			return koenig.rasiert_mich_einer(90,kingw_x,kingw_y);
 		}
-		
-		
-		
-		return false;
+		King koenig = new King(kings_x,kings_y-1,kings_x,kings_y,this.Spielfeld);
+		return koenig.rasiert_mich_einer(91,kings_x,kings_y);		
+
 	}
 	
 	public boolean schwarzistMatt() {
-		//binichimSchach
+		
 		King koenig1 = new King(kings_x,kings_y,kings_x,kings_y+1,this.Spielfeld);
 		King koenig2= new King(kings_x,kings_y,kings_x+1,kings_y,this.Spielfeld);
 		King koenig3= new King(kings_x,kings_y,kings_x+1,kings_y+1,this.Spielfeld);
@@ -554,7 +535,7 @@ public String getBoard() {
 		King koenig6= new King(kings_x,kings_y,kings_x-1,kings_y-1,this.Spielfeld);
 		King koenig7= new King(kings_x,kings_y,kings_x+1,kings_y-1,this.Spielfeld);
 		King koenig8= new King(kings_x,kings_y,kings_x-1,kings_y+1,this.Spielfeld);
-		return(!(koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
+		return(!(binIchImSchach(this.Spielfeld,this.blackPlayer) || koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
 		
 	}
 	
@@ -567,8 +548,9 @@ public String getBoard() {
 		King koenig6= new King(kingw_x,kingw_y,kingw_x-1,kingw_y-1,this.Spielfeld);
 		King koenig7= new King(kingw_x,kingw_y,kingw_x+1,kingw_y-1,this.Spielfeld);
 		King koenig8= new King(kingw_x,kingw_y,kingw_x-1,kingw_y+1,this.Spielfeld);
-		return(!(koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
+		return(!(binIchImSchach(this.Spielfeld,this.whitePlayer) || koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
 	}
+
 	
 	
 	public boolean istMeinGegnerImMatt( boolean gueltig,Player player) {
@@ -584,22 +566,6 @@ public String getBoard() {
 		}
 		
 		//return false;
-	}
+	}	
 	
-	/*public static void main(String[] args) {
-        CrazyhouseGame spiel = new CrazyhouseGame();
-        String brett = "rnbqkbnr/p6P/8/1b6/8/8/4p3/RNBQKBNR/";
-        spiel.setBoard(brett);
-       
-        Player weis = null;
-        String ali = spiel.getBoard();
-        System.out.print(ali + "\n");
-        
-        spiel.tryMove("e1-e2", weis);
-        
-        System.out.print(spiel.getBoard());
-        
-        
-    }*/
-
 }

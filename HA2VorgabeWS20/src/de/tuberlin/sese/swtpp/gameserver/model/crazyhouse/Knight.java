@@ -19,6 +19,9 @@ public class Knight {
 	
 	
 	public boolean canI() {
+		
+		
+		
 		int diffy = (int)Math.sqrt(Math.pow(this.yTo - this.yFrom,2));
 		int diffx = (int)Math.sqrt(Math.pow(this.xTo - this.xFrom,2));
 		
