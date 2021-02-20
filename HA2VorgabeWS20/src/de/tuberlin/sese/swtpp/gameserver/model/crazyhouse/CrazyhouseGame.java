@@ -220,8 +220,8 @@ public class CrazyhouseGame extends Game implements Serializable{
 		this.Rand = Rand;
 	}
 	
-	public void wo_ist_king(int element,int x,int y) { // wir m�ssen immer wissen wo der king ist
-		if(element  == 75) {						  // auch schon am anfang bei Setboard, es k�nnte ja Schach(matt) sein
+	public void wo_ist_king(int element,int x,int y) { // wir muessen immer wissen wo der king ist
+		if(element  == 75) {						  // auch schon am anfang bei Setboard, es koennte ja Schach(matt) sein
 			kingw_x = x;
 			kingw_y = y;
 		}
@@ -251,7 +251,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 			if( ((int) element) == 47) {
 				y = y -1;
 				x = 0;
-			}else if(    ( ( ( (int) element) >= 65 ) && ( ( (int) element) <= 90) ) ||  ( ( ((int) element) >= 97 ) && ( ( (int) element) <= 122) )  ) {
+			}else if(    ( ( ( (int) element) >= 65 ) && ( ( (int) element) <= 90) ) ||   (int) element >= 97    ) {
 				this.Spielfeld[x][y] = element;
 				wo_ist_king(element,x,y); // ist es der King ?
 				x = x+1;
@@ -297,10 +297,10 @@ public class CrazyhouseGame extends Game implements Serializable{
 		}
 		
 		///////// Jetzt Rand //////////
-		if(this.Rand != null) {
-			Arrays.sort(this.Rand);
-			ruckgabe = ruckgabe + new String(Rand); 
-		}
+
+		Arrays.sort(this.Rand);
+		ruckgabe = ruckgabe + new String(Rand); 
+
 				
 		
 		
@@ -403,12 +403,13 @@ public class CrazyhouseGame extends Game implements Serializable{
 		if(this.Spielfeld[xTo][yTo] == 0 && istImRand) {
 			char[][] neuesFeld = this.Spielfeld;
 			neuesFeld[xTo][yTo] = figur;
-			boolean binIchImSchach = !this.binIchImSchach(neuesFeld, player);
+			this.Spielfeld = neuesFeld;
+			boolean binIchImSchach = this.binIchImSchach(neuesFeld, player);
 			if(binIchImSchach) {
-				this.Spielfeld = neuesFeld;
 				this.RandEntferneI(i);
 				return true;
 			}
+			this.Spielfeld[xTo][yTo] = 0;
 		}
 		return false;
 	}
@@ -464,7 +465,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 		char ziel = this.Spielfeld[xTo][yTo];	//wer wird angegriffen?
 		char[] alterRand = this.Rand;
 		if(ziel != 0) {	//wir haben einen gegner
-			this.sortRand(this.randHinzu(this.Rand, ziel));// wir f�gen die entfernte figur zum Rand hinzu und sortieren den Rand
+			this.sortRand(this.randHinzu(this.Rand, ziel));// wir fuegen die entfernte figur zum Rand hinzu und sortieren den Rand
 		}
 		this.Spielfeld[xTo][yTo] = figur;	//wir bewegen den angreifer auf das neue feld
 		if(figur == 112 && yTo == 0) this.Spielfeld[xTo][yTo] = 113;
@@ -492,29 +493,127 @@ public class CrazyhouseGame extends Game implements Serializable{
 	}
 	
 	public boolean schwarzistMatt() {
+boolean ruckgabe = false;
 		
-		King koenig1 = new King(kings_x,kings_y,kings_x,kings_y+1,this.Spielfeld);
-		King koenig2= new King(kings_x,kings_y,kings_x+1,kings_y,this.Spielfeld);
-		King koenig3= new King(kings_x,kings_y,kings_x+1,kings_y+1,this.Spielfeld);
-		King koenig4= new King(kings_x,kings_y,kings_x-1,kings_y,this.Spielfeld);
-		King koenig5= new King(kings_x,kings_y,kings_x,kings_y-1,this.Spielfeld);
-		King koenig6= new King(kings_x,kings_y,kings_x-1,kings_y-1,this.Spielfeld);
-		King koenig7= new King(kings_x,kings_y,kings_x+1,kings_y-1,this.Spielfeld);
-		King koenig8= new King(kings_x,kings_y,kings_x-1,kings_y+1,this.Spielfeld);
-		return(!(binIchImSchach(this.Spielfeld,this.blackPlayer) || koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
+		if(kings_y+1 <= 7) { 
+			King koenig1 = new King(kings_x,kings_y,kings_x,kings_y+1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig1.canI();
+		}
+		
+		if(kings_x+1 <= 7) { 
+			King koenig2= new King(kings_x,kings_y,kings_x+1,kings_y,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig2.canI();
+			}
+		
+		if( (kings_y+1 <= 7) && (kings_x+1 <= 7) ) {
+			King koenig3= new King(kings_x,kings_y,kings_x+1,kings_y+1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig3.canI();
+		}
+		
+		
+		if(kings_y-1 >= 0) { 
+			King koenig4 = new King(kings_x,kings_y,kings_x,kings_y-1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig4.canI();
+			}
+		
+		if(kings_x-1 >= 0) { 
+			King koenig2= new King(kings_x,kings_y,kings_x-1,kings_y,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig2.canI();
+			}
+		
+		if( (kings_y-1 >= 0) && (kings_x-1 >= 0) ) {
+			King koenig3= new King(kings_x,kings_y,kings_x-1,kings_y-1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig3.canI();
+		}
+		
+		if( (kings_y+1 <= 7) && (kings_x-1 >= 0) ) {
+			King koenig3= new King(kings_x,kings_y,kings_x-1,kings_y+1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig3.canI();
+		}
+		if( (kings_y-1 >= 0) && (kings_x+1 <= 7) ) {
+			King koenig3= new King(kings_x,kings_y,kings_x+1,kings_y-1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig3.canI();
+		}
+		
+		
+		return(!(binIchImSchach(this.Spielfeld,this.blackPlayer) || ruckgabe) );
+		
+		
+		
+		
+		
+		
+//		if(kings_x+1 <= 7) {King koenig2= new King(kings_x,kings_y,kings_x+1,kings_y,this.Spielfeld); }
+//		if((kings_y+1 <= 7) && (kings_x+1 <= 7)) {King koenig3= new King(kings_x,kings_y,kings_x+1,kings_y+1,this.Spielfeld);
+//		King koenig4= new King(kings_x,kings_y,kings_x-1,kings_y,this.Spielfeld);
+//		King koenig5= new King(kings_x,kings_y,kings_x,kings_y-1,this.Spielfeld);
+//		King koenig6= new King(kings_x,kings_y,kings_x-1,kings_y-1,this.Spielfeld);
+//		King koenig7= new King(kings_x,kings_y,kings_x+1,kings_y-1,this.Spielfeld);
+//		King koenig8= new King(kings_x,kings_y,kings_x-1,kings_y+1,this.Spielfeld);
+//		return(!(binIchImSchach(this.Spielfeld,this.blackPlayer) || koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
+		
+
+		
 		
 	}
 	
 	public boolean weisistMatt() {
-		King koenig1 = new King(kingw_x,kingw_y,kingw_x,kingw_y+1,this.Spielfeld);
-		King koenig2= new King(kingw_x,kingw_y,kingw_x+1,kingw_y,this.Spielfeld);
-		King koenig3= new King(kingw_x,kingw_y,kingw_x+1,kingw_y+1,this.Spielfeld);
-		King koenig4= new King(kingw_x,kingw_y,kingw_x-1,kingw_y,this.Spielfeld);
-		King koenig5= new King(kingw_x,kingw_y,kingw_x,kingw_y-1,this.Spielfeld);
-		King koenig6= new King(kingw_x,kingw_y,kingw_x-1,kingw_y-1,this.Spielfeld);
-		King koenig7= new King(kingw_x,kingw_y,kingw_x+1,kingw_y-1,this.Spielfeld);
-		King koenig8= new King(kingw_x,kingw_y,kingw_x-1,kingw_y+1,this.Spielfeld);
-		return(!(binIchImSchach(this.Spielfeld,this.whitePlayer) || koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
+//		King koenig1 = new King(kingw_x,kingw_y,kingw_x,kingw_y+1,this.Spielfeld);
+//		King koenig2= new King(kingw_x,kingw_y,kingw_x+1,kingw_y,this.Spielfeld);
+//		King koenig3= new King(kingw_x,kingw_y,kingw_x+1,kingw_y+1,this.Spielfeld);
+//		King koenig4= new King(kingw_x,kingw_y,kingw_x-1,kingw_y,this.Spielfeld);
+//		King koenig5= new King(kingw_x,kingw_y,kingw_x,kingw_y-1,this.Spielfeld);
+//		King koenig6= new King(kingw_x,kingw_y,kingw_x-1,kingw_y-1,this.Spielfeld);
+//		King koenig7= new King(kingw_x,kingw_y,kingw_x+1,kingw_y-1,this.Spielfeld);
+//		King koenig8= new King(kingw_x,kingw_y,kingw_x-1,kingw_y+1,this.Spielfeld);
+//		return(!(binIchImSchach(this.Spielfeld,this.whitePlayer) || koenig1.canI() || koenig2.canI() ||koenig3.canI() ||koenig4.canI() ||koenig5.canI() ||koenig6.canI() ||koenig7.canI() ||koenig8.canI()) );
+	
+		boolean ruckgabe = false;
+		
+		if(kingw_y+1 <= 7) { 
+			King koenig1 = new King(kingw_x,kingw_y,kingw_x,kingw_y+1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig1.canI();
+		}
+		
+		if(kingw_x+1 <= 7) { 
+			King koenig2= new King(kingw_x,kingw_y,kingw_x+1,kingw_y,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig2.canI();
+			}
+		
+		if( (kingw_y+1 <= 7) && (kingw_x+1 <= 7) ) {
+			King koenig3= new King(kingw_x,kingw_y,kingw_x+1,kingw_y+1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig3.canI();
+		}
+		
+		
+		if(kingw_y-1 >= 0) { 
+			King koenig4 = new King(kingw_x,kingw_y,kingw_x,kingw_y-1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig4.canI();
+			}
+		
+		if(kingw_x-1 >= 0) { 
+			King koenig2= new King(kingw_x,kingw_y,kingw_x-1,kingw_y,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig2.canI();
+			}
+		
+		if( (kingw_y-1 >= 0) && (kingw_x-1 >= 0) ) {
+			King koenig3= new King(kingw_x,kingw_y,kingw_x-1,kingw_y-1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig3.canI();
+		}
+		
+		if( (kingw_y+1 <= 7) && (kingw_x-1 >= 0) ) {
+			King koenig3= new King(kingw_x,kingw_y,kingw_x-1,kingw_y+1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig3.canI();
+		}
+		if( (kingw_y-1 >= 0) && (kingw_x+1 <= 7) ) {
+			King koenig3= new King(kingw_x,kingw_y,kingw_x+1,kingw_y-1,this.Spielfeld);
+			ruckgabe = ruckgabe || koenig3.canI();
+		}
+		
+		
+		return(!(binIchImSchach(this.Spielfeld,this.whitePlayer) || ruckgabe) );
+	
+	
 	}
 
 	

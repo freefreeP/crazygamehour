@@ -85,22 +85,40 @@ public class King {
 
 	public boolean rasiert_mich_einer(int farbe,int xTo, int yTo) {
 		if(farbe <= 90) {
-			if(!w_rasiert_mich_pawn(farbe,xTo,yTo)) {return false;}
-			if(!w_rookrasiert(farbe,xTo,yTo)) {return false;}
-			if(!w_rasiert_mich_bishop(farbe,xTo,yTo)) {return false;}
-			if(!w_rasiert_mich_pferd(farbe,xTo,yTo)) {return false;}
-			
-			return true;
+			return weis_rasiert_mich_einer(farbe,xTo,yTo);
+
 		}else {
-			if(!s_rasiert_mich_pawn(farbe,xTo,yTo)) {return false;}
-			if(!s_rasiert_mich_rook(farbe,xTo,yTo)) {return false;}
-			if(!s_rasiert_mich_bishop(farbe,xTo,yTo)) {return false;}
-			if(!s_rasiert_mich_pferd(farbe,xTo,yTo)) {return false;}
-			
-			
-			return true;
+			return schwarz_rasiert_mich_einer(farbe,xTo,yTo);
 		}
 	}
+	
+	
+	public boolean weis_rasiert_mich_einer(int farbe,int xTo, int yTo) {
+		if(!w_rasiert_mich_pawn(farbe,xTo,yTo)) {return false;}
+		if(!w_rookrasiert(farbe,xTo,yTo)) {return false;}
+		if(!w_rasiert_mich_bishop(farbe,xTo,yTo)) {return false;}
+		if(!w_rasiert_mich_pferd(farbe,xTo,yTo)) {return false;}
+		if(!w_rasiert_mich_könig(farbe,xTo,yTo)) {return false;}
+		
+		return true;
+	}
+	
+	public boolean schwarz_rasiert_mich_einer(int farbe,int xTo, int yTo) {
+		if(!s_rasiert_mich_pawn(farbe,xTo,yTo)) {return false;}
+		if(!s_rasiert_mich_rook(farbe,xTo,yTo)) {return false;}
+		if(!s_rasiert_mich_bishop(farbe,xTo,yTo)) {return false;}
+		if(!s_rasiert_mich_pferd(farbe,xTo,yTo)) {return false;}
+		if(!s_rasiert_mich_könig(farbe,xTo,yTo)) {return false;}
+
+		
+		
+		return true;
+	}
+	
+	
+	
+	
+	
 	
 	////////////////////// Bauer prüfen ////////////////////////////
 	public boolean w_rasiert_mich_pawn(int farbe,int xTo, int yTo) {			
@@ -172,7 +190,7 @@ public class King {
 		
 		}
 		
-		for(int i = this.xTo-1; i >= 0; i = i-1) {
+		for(int i = this.yTo-1; i >= 0; i = i-1) {
 			//if(this.spielfeld[i][this.yTo] <= 90) break;
 			//else if(this.spielfeld[this.xTo][i] == 107 || this.spielfeld[this.xTo][i] == 114) return false;
 		
