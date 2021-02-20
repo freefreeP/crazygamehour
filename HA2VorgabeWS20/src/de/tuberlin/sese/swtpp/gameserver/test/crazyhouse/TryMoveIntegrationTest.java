@@ -1018,6 +1018,12 @@ public class TryMoveIntegrationTest {
 		assertMove("d5-d4",false,false);
 		assertGameState("8/3K4/8/1K1k1K2/8/3K4/8/8/",false,false,false);
 	}
+//	@Test
+//	public void s_rasiert_mich_könig_test3(){
+//		startGame("8/3K4/8/1K1k1K2/8/3K4/8/8/",false);
+//		assertMove("d5-d6",false,false);
+//		assertGameState("8/3K4/8/1K1k1K2/8/3K4/8/8/",false,false,false);
+//	}
 	@Test
 	public void s_rasiert_mich_könig_test3(){
 		startGame("8/3K4/8/1K1k1K2/8/3K4/8/8/",false);
@@ -1028,51 +1034,28 @@ public class TryMoveIntegrationTest {
 	
 	@Test
 	public void s_rasiert_mich_könig_test4(){
-		startGame("8/1K3K2/8/3k4/8/8/8/8/",false);
-		assertMove("d5-c6",false,false);
-		assertGameState("8/1K3K2/8/3k4/8/8/8/8/",false,false,false);
+		startGame("8/8/8/3k4/8/1K3K2/8/8/",false);
+		assertMove("d5-c4",false,false);
+		assertGameState("8/8/8/3k4/8/1K3K2/8/8/",false,false,false);
 	}
 	@Test
 	public void s_rasiert_mich_könig_test5(){
-		startGame("8/1K3K2/8/3k4/8/8/8/8/",false);
-		assertMove("d5-e6",false,false);
-		assertGameState("8/1K3K2/8/3k4/8/8/8/8/",false,false,false);
+		startGame("8/8/8/3k4/8/1K3K2/8/8/",false);
+		assertMove("d5-e4",false,false);
+		assertGameState("8/8/8/3k4/8/1K3K2/8/8/",false,false,false);
 	}
 	
-	
-	
 	@Test
-	public void IchBinImSchachWeiss(){
+	public void IchBinImSchach(){
 		startGame("rnbkqbnr/pppp1ppp/8/8/8/8/PPPPBPPP/RNBQKBNR/",true);
 		assertMove("e2-f3",true,false);
 		assertGameState("rnbkqbnr/pppp1ppp/8/8/8/8/PPPPBPPP/RNBQKBNR/",true,false,false);
 	}
 	
-	
-	@Test
-	public void IchBinImSchachSchwarz(){
-		startGame("rnbkqbnr/pppb1ppp/8/8/8/8/PPP1BPPP/RNBQKBNR/",false);
-		assertMove("d7-c6",false,false);
-		assertGameState("rnbkqbnr/pppb1ppp/8/8/8/8/PPP1BPPP/RNBQKBNR/",false,false,false);
-	}
+
 	
 	
-	
-	@Test
-	public void IchBinImSchachSchwarzNachPlace(){
-		startGame("rbbkqbnr/ppp2ppp/8/8/8/8/PPP1BPPP/RNBQKBNR/p",false);
-		assertMove("p-g4",false,false);
-		assertGameState("rbbkqbnr/ppp2ppp/8/8/8/8/PPP1BPPP/RNBQKBNR/p",false,false,false);
-	}
-	
-	
-	
-	@Test
-	public void SchwarzIstSchachMatt(){
-		startGame("7k/8/5K2/6Q1/8/8/8/8/",true);
-		assertMove("g5-g7",true,true);
-		assertGameState("7k/6Q1/5K2/8/8/8/8/8/",true,true,true);
-	}
+
 	
 	
 	
@@ -1082,5 +1065,67 @@ public class TryMoveIntegrationTest {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 
 }

@@ -132,7 +132,7 @@ public class King {
 	
 	public boolean w_rookrasiert(int farbe,int xTo, int yTo) {
 		
-		for(int i = this.xTo; i <= 7; i++) {
+		for(int i = this.xTo+1; i <= 7; i++) {
 			//if(this.spielfeld[i][this.yTo] <= 90) break;
 			//else if(this.spielfeld[i][this.yTo] == 107 || this.spielfeld[i][this.yTo] == 114  ) return false; 
 			
@@ -141,7 +141,7 @@ public class King {
 		}
 		
 		
-		for(int i = this.xTo; i >= 0; i = i-1) {
+		for(int i = this.xTo-1; i >= 0; i = i-1) {
 			//if(this.spielfeld[i][this.yTo] <= 90) break;
 			//else if(this.spielfeld[i][this.yTo] == 107 || this.spielfeld[i][this.yTo] == 114) return false; 
 			
@@ -164,20 +164,20 @@ public class King {
 	
 	
 	public boolean w_rasiert_mich_rook_rest(int farbe,int xTo, int yTo) {
-		for(int i = this.yTo; i <= 7; i++) {
+		for(int i = this.yTo+1; i <= 7; i++) {
 			//if(this.spielfeld[i][this.yTo] <= 90) break;
 			//else if(this.spielfeld[this.xTo][i] == 107 || this.spielfeld[this.xTo][i] == 114) return false;
 			if(this.spielfeld[this.xTo][i] == 113 || this.spielfeld[this.xTo][i] == 114  ) return false;
-			else if(this.spielfeld[this.xTo][i] > 0) break;	
+			if(this.spielfeld[this.xTo][i] > 0) break;	
 		
 		}
 		
-		for(int i = this.xTo; i >= 0; i = i-1) {
+		for(int i = this.xTo-1; i >= 0; i = i-1) {
 			//if(this.spielfeld[i][this.yTo] <= 90) break;
 			//else if(this.spielfeld[this.xTo][i] == 107 || this.spielfeld[this.xTo][i] == 114) return false;
 		
 			if(this.spielfeld[this.xTo][i] == 113 || this.spielfeld[this.xTo][i] == 114  ) return false;
-			else if(this.spielfeld[this.xTo][i] > 0) break;	
+			if(this.spielfeld[this.xTo][i] > 0) break;	
 		}
 		
 		
@@ -195,7 +195,7 @@ public class King {
 	
 	
 	public boolean s_rasiert_mich_rook(int farbe,int xTo, int yTo) {
-		for(int i = this.xTo; i <= 7; i++) {
+		for(int i = this.xTo+1; i <= 7; i++) {
 			//if(this.spielfeld[i][this.yTo] > 90) break;
 			//if(this.spielfeld[i][this.yTo] == 75 || this.spielfeld[i][this.yTo] == 82) return false; 
 			
@@ -206,7 +206,7 @@ public class King {
 			
 		}
 		
-		for(int i = this.xTo; i >= 0; i = i-1) {
+		for(int i = this.xTo-1; i >= 0; i = i-1) {
 			//if(this.spielfeld[i][this.yTo] > 90) break;
 			//if(this.spielfeld[i][this.yTo] == 75 || this.spielfeld[i][this.yTo] == 82) return false;
 		
@@ -228,7 +228,7 @@ public class King {
 	}
 
 	public boolean s_rasiert_mich_rook_rest(int farbe,int xTo, int yTo) {
-		for(int i = this.yTo; i <= 7; i++) {
+		for(int i = this.yTo+1; i <= 7; i++) {
 			//if(this.spielfeld[i][this.yTo] > 90) break;
 			//if(this.spielfeld[this.xTo][i] == 75 || this.spielfeld[this.xTo][i] == 82) return false; 
 		
@@ -237,7 +237,7 @@ public class King {
 			
 		}
 		
-		for(int i = this.yTo; i >= 0; i = i-1) {
+		for(int i = this.yTo-1; i >= 0; i = i-1) {
 			//if(this.spielfeld[i][this.yTo] > 90) break;
 			//if(this.spielfeld[this.xTo][i] == 75 || this.spielfeld[this.xTo][i] == 82) return false; 
 			
