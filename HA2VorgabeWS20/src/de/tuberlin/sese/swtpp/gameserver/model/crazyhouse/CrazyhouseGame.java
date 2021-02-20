@@ -220,8 +220,8 @@ public class CrazyhouseGame extends Game implements Serializable{
 		this.Rand = Rand;
 	}
 	
-	public void wo_ist_king(int element,int x,int y) { // wir m�ssen immer wissen wo der king ist
-		if(element  == 75) {						  // auch schon am anfang bei Setboard, es k�nnte ja Schach(matt) sein
+	public void wo_ist_king(int element,int x,int y) { // wir muessen immer wissen wo der king ist
+		if(element  == 75) {						  // auch schon am anfang bei Setboard, es koennte ja Schach(matt) sein
 			kingw_x = x;
 			kingw_y = y;
 		}
@@ -251,7 +251,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 			if( ((int) element) == 47) {
 				y = y -1;
 				x = 0;
-			}else if(    ( ( ( (int) element) >= 65 ) && ( ( (int) element) <= 90) ) ||  ( ( ((int) element) >= 97 ) && ( ( (int) element) <= 122) )  ) {
+			}else if(    ( ( ( (int) element) >= 65 ) && ( ( (int) element) <= 90) ) ||   (int) element >= 97    ) {
 				this.Spielfeld[x][y] = element;
 				wo_ist_king(element,x,y); // ist es der King ?
 				x = x+1;
@@ -297,10 +297,10 @@ public class CrazyhouseGame extends Game implements Serializable{
 		}
 		
 		///////// Jetzt Rand //////////
-		if(this.Rand != null) {
-			Arrays.sort(this.Rand);
-			ruckgabe = ruckgabe + new String(Rand); 
-		}
+
+		Arrays.sort(this.Rand);
+		ruckgabe = ruckgabe + new String(Rand); 
+
 				
 		
 		
@@ -403,12 +403,13 @@ public class CrazyhouseGame extends Game implements Serializable{
 		if(this.Spielfeld[xTo][yTo] == 0 && istImRand) {
 			char[][] neuesFeld = this.Spielfeld;
 			neuesFeld[xTo][yTo] = figur;
+			this.Spielfeld = neuesFeld;
 			boolean binIchImSchach = this.binIchImSchach(neuesFeld, player);
 			if(binIchImSchach) {
-				this.Spielfeld = neuesFeld;
 				this.RandEntferneI(i);
 				return true;
 			}
+			this.Spielfeld[xTo][yTo] = 0;
 		}
 		return false;
 	}
@@ -464,7 +465,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 		char ziel = this.Spielfeld[xTo][yTo];	//wer wird angegriffen?
 		char[] alterRand = this.Rand;
 		if(ziel != 0) {	//wir haben einen gegner
-			this.sortRand(this.randHinzu(this.Rand, ziel));// wir f�gen die entfernte figur zum Rand hinzu und sortieren den Rand
+			this.sortRand(this.randHinzu(this.Rand, ziel));// wir fuegen die entfernte figur zum Rand hinzu und sortieren den Rand
 		}
 		this.Spielfeld[xTo][yTo] = figur;	//wir bewegen den angreifer auf das neue feld
 		if(figur == 112 && yTo == 0) this.Spielfeld[xTo][yTo] = 113;
