@@ -1041,15 +1041,38 @@ public class TryMoveIntegrationTest {
 	
 	
 	
-
+	@Test
+	public void IchBinImSchachWeiss(){
+		startGame("rnbkqbnr/pppp1ppp/8/8/8/8/PPPPBPPP/RNBQKBNR/",true);
+		assertMove("e2-f3",true,false);
+		assertGameState("rnbkqbnr/pppp1ppp/8/8/8/8/PPPPBPPP/RNBQKBNR/",true,false,false);
+	}
 	
 	
+	@Test
+	public void IchBinImSchachSchwarz(){
+		startGame("rnbkqbnr/pppb1ppp/8/8/8/8/PPP1BPPP/RNBQKBNR/",false);
+		assertMove("d7-c6",false,false);
+		assertGameState("rnbkqbnr/pppb1ppp/8/8/8/8/PPP1BPPP/RNBQKBNR/",false,false,false);
+	}
 	
 	
 	
+	@Test
+	public void IchBinImSchachSchwarzNachPlace(){
+		startGame("rbbkqbnr/ppp2ppp/8/8/8/8/PPP1BPPP/RNBQKBNR/p",false);
+		assertMove("p-g4",false,false);
+		assertGameState("rbbkqbnr/ppp2ppp/8/8/8/8/PPP1BPPP/RNBQKBNR/p",false,false,false);
+	}
 	
 	
 	
+	@Test
+	public void SchwarzIstSchachMatt(){
+		startGame("7k/8/5K2/6Q1/8/8/8/8/",true);
+		assertMove("g5-g7",true,true);
+		assertGameState("7k/6Q1/5K2/8/8/8/8/8/",true,true,true);
+	}
 	
 	
 	
@@ -1059,59 +1082,5 @@ public class TryMoveIntegrationTest {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 
 }
