@@ -33,7 +33,7 @@ public class King {
 		
 		//if(spielfeld[this.xTo][this.xTo])
 		
-		if(!rasiert_mich_könig(this.spielfeld[xFrom][yFrom],xTo,yTo)) return false;
+		//if(!rasiert_mich_könig(this.spielfeld[xFrom][yFrom],xTo,yTo)) return false;
 		
 		return rasiert_mich_einer(this.spielfeld[xFrom][yFrom],xTo,yTo);	// gehe ich ins schach ?			
 	
@@ -41,13 +41,13 @@ public class King {
 	
 	//////////////////IST KÖNIG NEBEN MIR ODER HINTER MIR MUSS NOCH MACHEN
 	
-	public boolean rasiert_mich_könig(int farbe,int xTo, int yTo) {
-		if(farbe <= 90) {
-			return w_rasiert_mich_könig(farbe,xTo, yTo);
-		} else {
-			return s_rasiert_mich_könig(farbe,xTo, yTo);
-		}
-	}
+//	public boolean rasiert_mich_könig(int farbe,int xTo, int yTo) {
+//		if(farbe <= 90) {
+//			return w_rasiert_mich_könig(farbe,xTo, yTo);
+//		} else {
+//			return s_rasiert_mich_könig(farbe,xTo, yTo);
+//		}
+//	}
 	
 	
 	public boolean w_rasiert_mich_könig(int farbe,int xTo, int yTo) {

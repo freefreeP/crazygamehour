@@ -268,8 +268,6 @@ public class CrazyhouseGame extends Game implements Serializable{
 
 	@Override
 	public String getBoard() {
-		
-		// TODO: implement
 		String ruckgabe = "";
 		boolean check = true;
 		for(int y = 7; y >= 0;y--) {
@@ -376,7 +374,6 @@ public class CrazyhouseGame extends Game implements Serializable{
 		this.setHistory(liste);
 		
 		if(schachMatt) {
-			this.finish();
 			this.regularGameEnd(player);
 			return true;
 		}
@@ -491,48 +488,62 @@ public class CrazyhouseGame extends Game implements Serializable{
 		return koenig.rasiert_mich_einer(91,kings_x,kings_y);		
 
 	}
-	
+	//
 	public boolean schwarzistMatt() {
-boolean ruckgabe = false;
+		boolean ruckgabe = false;
 		
 		if(kings_y+1 <= 7) { 
 			King koenig1 = new King(kings_x,kings_y,kings_x,kings_y+1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig1.canI();
+			ruckgabe = koenig1.canI();
 		}
 		
 		if(kings_x+1 <= 7) { 
 			King koenig2= new King(kings_x,kings_y,kings_x+1,kings_y,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig2.canI();
+			if(koenig2.canI()) {
+				ruckgabe = true;
+				}
 			}
 		
 		if( (kings_y+1 <= 7) && (kings_x+1 <= 7) ) {
 			King koenig3= new King(kings_x,kings_y,kings_x+1,kings_y+1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig3.canI();
+			if(koenig3.canI()) {
+				ruckgabe = true;
+				}
 		}
 		
 		
 		if(kings_y-1 >= 0) { 
 			King koenig4 = new King(kings_x,kings_y,kings_x,kings_y-1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig4.canI();
+			if(koenig4.canI()) {
+				ruckgabe = true;
+				}
 			}
 		
 		if(kings_x-1 >= 0) { 
 			King koenig2= new King(kings_x,kings_y,kings_x-1,kings_y,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig2.canI();
+			if(koenig2.canI()) {
+				ruckgabe = true;
+				}
 			}
 		
 		if( (kings_y-1 >= 0) && (kings_x-1 >= 0) ) {
 			King koenig3= new King(kings_x,kings_y,kings_x-1,kings_y-1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig3.canI();
+			if(koenig3.canI()) {
+				ruckgabe = true;
+				}
 		}
 		
 		if( (kings_y+1 <= 7) && (kings_x-1 >= 0) ) {
 			King koenig3= new King(kings_x,kings_y,kings_x-1,kings_y+1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig3.canI();
+			if(koenig3.canI()) {
+				ruckgabe = true;
+				}
 		}
 		if( (kings_y-1 >= 0) && (kings_x+1 <= 7) ) {
 			King koenig3= new King(kings_x,kings_y,kings_x+1,kings_y-1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig3.canI();
+			if(koenig3.canI()) {
+				ruckgabe = true;
+				}
 		}
 		
 		
@@ -572,42 +583,64 @@ boolean ruckgabe = false;
 		
 		if(kingw_y+1 <= 7) { 
 			King koenig1 = new King(kingw_x,kingw_y,kingw_x,kingw_y+1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig1.canI();
+			ruckgabe = koenig1.canI(); //ruckgabe || koenig1.canI();
 		}
 		
 		if(kingw_x+1 <= 7) { 
 			King koenig2= new King(kingw_x,kingw_y,kingw_x+1,kingw_y,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig2.canI();
+			//ruckgabe = ruckgabe || koenig2.canI();
+			if(koenig2.canI() == true) {
+				ruckgabe = true;
+			}
 			}
 		
 		if( (kingw_y+1 <= 7) && (kingw_x+1 <= 7) ) {
 			King koenig3= new King(kingw_x,kingw_y,kingw_x+1,kingw_y+1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig3.canI();
+//			ruckgabe = ruckgabe || koenig3.canI();
+			if(koenig3.canI() == true) {
+				ruckgabe = true;
+			}
+			
 		}
 		
 		
 		if(kingw_y-1 >= 0) { 
 			King koenig4 = new King(kingw_x,kingw_y,kingw_x,kingw_y-1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig4.canI();
+			//ruckgabe = ruckgabe || koenig4.canI();
+			if(koenig4.canI() == true) {
+				ruckgabe = true;
+			}
 			}
 		
 		if(kingw_x-1 >= 0) { 
 			King koenig2= new King(kingw_x,kingw_y,kingw_x-1,kingw_y,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig2.canI();
+			//ruckgabe = ruckgabe || koenig2.canI();
+			if(koenig2.canI() == true) {
+				ruckgabe = true;
+			}
 			}
 		
 		if( (kingw_y-1 >= 0) && (kingw_x-1 >= 0) ) {
 			King koenig3= new King(kingw_x,kingw_y,kingw_x-1,kingw_y-1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig3.canI();
+			//ruckgabe = ruckgabe || koenig3.canI();
+			if(koenig3.canI() == true) {
+				ruckgabe = true;
+			}
 		}
 		
 		if( (kingw_y+1 <= 7) && (kingw_x-1 >= 0) ) {
 			King koenig3= new King(kingw_x,kingw_y,kingw_x-1,kingw_y+1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig3.canI();
+			//ruckgabe = ruckgabe || koenig3.canI();
+			if(koenig3.canI() == true) {
+				ruckgabe = true;
+			}
 		}
 		if( (kingw_y-1 >= 0) && (kingw_x+1 <= 7) ) {
 			King koenig3= new King(kingw_x,kingw_y,kingw_x+1,kingw_y-1,this.Spielfeld);
-			ruckgabe = ruckgabe || koenig3.canI();
+			//ruckgabe = ruckgabe || koenig3.canI();
+			if(koenig3.canI() == true) {
+				ruckgabe = true;
+			}
 		}
 		
 		
@@ -615,6 +648,7 @@ boolean ruckgabe = false;
 	
 	
 	}
+
 
 	
 	
