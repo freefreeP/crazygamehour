@@ -1086,13 +1086,65 @@ public class TryMoveIntegrationTest {
 	
 
 	
+	@Test
+	public void SchwarzIstSchachAberKannObenRechts(){
+		startGame("8/8/5K2/8/1Q6/8/8/k7/",true);
+		assertMove("b4-b2",true,true);
+		assertGameState("8/8/5K2/8/8/8/1Q6/k7/",false,false,false);
+	}
+	
+	@Test
+	public void SchwarzIstSchachAberKannObenLinks(){
+		startGame("8/8/5K2/8/6Q1/8/8/7k/",true);
+		assertMove("g4-g2",true,true);
+		assertGameState("8/8/5K2/8/8/8/6Q1/7k/",false,false,false);
+	}
+	
 	
 	
 	@Test
-	public void SchwarzIstSchachMatt(){
+	public void SchwarzIstSchachMattObenRechts(){
 		startGame("7k/8/5K2/6Q1/8/8/8/8/",true);
 		assertMove("g5-g7",true,true);
 		assertGameState("7k/6Q1/5K2/8/8/8/8/8/",true,true,true);
+	}
+	
+	@Test
+	public void SchwarzIstSchachMattObenLinks(){
+		startGame("k7/8/2K5/1Q6/8/8/8/8/",true);
+		assertMove("b5-b7",true,true);
+		assertGameState("k7/1Q6/2K5/8/8/8/8/8/",true,true,true);
+	}
+	
+	
+	
+	@Test
+	public void SchwarzIstSchachMattUntenRechts(){
+		startGame("8/8/8/8/6Q1/5K2/8/7k/",true);
+		assertMove("g4-g2",true,true);
+		assertGameState("8/8/8/8/8/5K2/6Q1/7k/",true,true,true);
+	}
+	
+	@Test
+	public void SchwarzIstSchachMattUntenLinks(){
+		startGame("8/8/8/8/1Q6/2K5/8/k7/",true);
+		assertMove("b4-b2",true,true);
+		assertGameState("8/8/8/8/8/2K5/1Q6/k7/",true,true,true);
+	}
+	
+	
+	@Test
+	public void WeissBishopFix(){
+		startGame("rnbqkbnr/pppp1ppp/4p3/8/2B5/8/PPPPPPPP/RNBQK1NR/",true);
+		assertMove("c4-f7",true,false);
+		assertGameState("rnbqkbnr/pppp1ppp/4p3/8/2B5/8/PPPPPPPP/RNBQK1NR/",true,false,false);
+	}
+	
+	@Test
+	public void WeissQueenFix(){
+		startGame("rnbqkbnr/pppp1ppp/4p3/8/2Q5/8/PPPPPPPP/RNBQK1NR/",true);
+		assertMove("c4-f7",true,false);
+		assertGameState("rnbqkbnr/pppp1ppp/4p3/8/2Q5/8/PPPPPPPP/RNBQK1NR/",true,false,false);
 	}
 	
 	
@@ -1104,13 +1156,92 @@ public class TryMoveIntegrationTest {
 	}
 	
 	
+	@Test
+	public void Weis_Ist_Im_Matt(){
+		startGame("6K1/6q1/7r/8/8/8/8/8/",false);
+		assertMove("h6-h7",false,true);
+		assertGameState("6K1/6qr/8/8/8/8/8/8/",false,true,false);
+	}
 	
 	
+	@Test
+	public void Weis_Ist_Im_Matt2(){
+		startGame("8/4q1K1/6r1/8/8/8/8/8/",false);
+		assertMove("e7-f7",false,true);
+		assertGameState("8/5qK1/6r1/8/8/8/8/8/",true,false,false);
+	}
 	
 	
+
+    @Test
+    public void WeisIstSchachAberKannObenRechts(){
+        startGame("8/8/5k2/8/1q6/8/8/K7/",false);
+        assertMove("b4-b2",false,true);
+        assertGameState("8/8/5k2/8/8/8/1q6/K7/",true,false,false);
+    }
+    
+    @Test
+    public void WeisIstSchachAberKannObenLinks(){
+        startGame("8/8/5k2/8/6q1/8/8/7K/",false);
+        assertMove("g4-g2",false,true);
+        assertGameState("8/8/5k2/8/8/8/6q1/7K/",true,false,false);
+    }
+    
+    
+    @Test
+    public void WeisIstSchachMattObenRechts(){
+        startGame("7K/8/5k2/6q1/8/8/8/8/",false);
+        assertMove("g5-g7",false,true);
+        assertGameState("7K/6q1/5k2/8/8/8/8/8/",false,true,false);
+    }
+    
+    @Test
+    public void WeisIstSchachMattObenLinks(){
+        startGame("K7/8/2k5/1q6/8/8/8/8/",false);
+        assertMove("b5-b7",false,true);
+        assertGameState("K7/1q6/2k5/8/8/8/8/8/",false,true,false);
+    }
+    
+    
+    
+    
+    
+    @Test
+    public void WeisIstSchachMattUntenRechts(){
+        startGame("8/8/8/8/6q1/5k2/8/7K/",false);
+        assertMove("g4-g2",false,true);
+        assertGameState("8/8/8/8/8/5k2/6q1/7K/",false,true,false);
+    }
+    
+    @Test
+    public void WeisIstSchachMattUntenLinks(){
+        startGame("8/8/8/8/1q6/2k5/8/K7/",false);
+        assertMove("b4-b2",false,true);
+        assertGameState("8/8/8/8/8/2k5/1q6/K7/",false,true,false);
+    }
+    
+  @Test
+  public void WeisIstSchachMattUntenLinks3(){
+     startGame("8/5qrK/8/8/8/8/8/8/",false);
+      assertMove("f7-g8",false,true);
+      assertGameState("6q1/6rK/8/8/8/8/8/8/",true,false,false);
+  }
+
+  @Test
+  public void WeisIstSchachMattUntenLinks2(){
+	     startGame("8/8/8/8/q7/2r5/1K6/8/",false);
+	      assertMove("a4-b3",false,true);
+	      assertGameState("8/8/8/8/8/1qr5/1K6/8/",true,false,false);
+	  }
+  
+  @Test
+  public void WeisIstSchachMattUntenLinks5(){
+	     startGame("8/8/8/8/7q/5r2/6K1/8/",false);
+	      assertMove("h4-g3",false,true);
+	      assertGameState("8/8/8/8/8/5rq1/6K1/8/",true,false,false);
+	  }
 	
-	
-	
+
 
 }
 
