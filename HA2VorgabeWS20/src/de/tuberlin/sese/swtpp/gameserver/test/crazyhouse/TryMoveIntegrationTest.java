@@ -99,6 +99,13 @@ public class TryMoveIntegrationTest {
 		assertGameState("rnbqkbnr/pppp1ppp/4p3/8/3P4/8/PPP1PPPP/RNBQKBNR/",true,false,false);
 	}
 	
+	@Test
+	public void schwarzPawnZweiVorAberJmdDazwischen() {
+		startGame("rnbqkbnr/pppppppp/4P3/8/3P4/8/PPP1PPPP/RNBQKBNR/",false);
+		assertMove("e7-e5",false,false);
+		assertGameState("rnbqkbnr/pppppppp/4P3/8/3P4/8/PPP1PPPP/RNBQKBNR/",false,false,false);
+	}
+	
 	
 	@Test
 	public void schwarzDortIstEinWeisserKoenig() {
