@@ -387,7 +387,22 @@ public class CrazyhouseGame extends Game implements Serializable{
 		return true;
 	}
 	
+	public boolean checkIfLastOrFirstRowPawnPlace(char figur,  int xTo, int yTo) {
+		
+		if(yTo == 0 || yTo == 7) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
 	public boolean realPlace(char figur, int xTo, int yTo, Player player) {//kein move, sondern von ausserhalb platzieren
+		if(figur == 112 || figur == 80) {
+			if(this.checkIfLastOrFirstRowPawnPlace(figur, xTo, yTo)) {
+				return false;
+			}
+		}
 		int n = this.Rand.length;
 		boolean istImRand = false;
 		int i;
