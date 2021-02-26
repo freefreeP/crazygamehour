@@ -1247,6 +1247,22 @@ public class TryMoveIntegrationTest {
 	      assertMove("h4-g3",false,true);
 	      assertGameState("8/8/8/8/8/5rq1/6K1/8/",true,false,false);
 	  }
+  
+  @Test
+  public void SchwarzPlatziertBauerInFalscheReiheUnten(){
+	     startGame("5k2/2k3r1/K7/2r3k1/4k3/R6K/1K6/3KQ2R/",false);
+	      assertMove("p-c1",false,false);
+	      assertGameState("5k2/2k3r1/K7/2r3k1/4k3/R6K/1K6/3KQ2R/",false,false,false);
+	  }
+  
+  
+  
+  @Test
+  public void WeissPlatziertBauerInFalscheReiheOben(){
+	     startGame("5k2/2k3r1/K7/2r3k1/4k3/R6K/1K6/3KQ2R/",true);
+	      assertMove("P-c8",true,false);
+	      assertGameState("5k2/2k3r1/K7/2r3k1/4k3/R6K/1K6/3KQ2R/",true,false,false);
+	  }
 	
 
 
