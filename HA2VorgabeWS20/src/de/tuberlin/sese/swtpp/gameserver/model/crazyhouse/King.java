@@ -27,16 +27,8 @@ public class King {
 		int diffy = this.yTo - this.yFrom;
 		int diffx = this.xTo - this.xFrom;
 		if(  !((  (Math.abs(diffx) <= 1) && (Math.abs(diffy) <= 1)    ) )) {   //   ||      (  (Math.abs(diffx) <= 1) && (Math.abs(diffy) == 1)    )    )  );   //                ||      (  (Math.abs(diffx) == 1) && (Math.abs(diffy) == 1)    )                 )  )                                                            {	
-		
-			return false;
-		}
-		
-		//if(spielfeld[this.xTo][this.xTo])
-		
-		//if(!rasiert_mich_könig(this.spielfeld[xFrom][yFrom],xTo,yTo)) return false;
-		
+			return false;}		
 		return rasiert_mich_einer(this.spielfeld[xFrom][yFrom],xTo,yTo);	// gehe ich ins schach ?			
-	
 }
 	
 	//////////////////IST KÖNIG NEBEN MIR ODER HINTER MIR MUSS NOCH MACHEN
@@ -55,13 +47,22 @@ public class King {
 		if( (yTo-1 >= 0) && this.spielfeld[xTo][yTo-1] == 107) return false;
 		if( (xTo+1 <= 7) && this.spielfeld[xTo+1][yTo] == 107) return false;
 		if( (xTo-1 >= 0) && this.spielfeld[xTo-1][yTo] == 107) return false;
-		if( ((yTo-1 >= 0) && (xTo+1 <= 7)) && this.spielfeld[xTo+1][yTo-1] == 107) return false;
-		if( ((yTo-1 >= 0) && (xTo-1 >= 0)) && this.spielfeld[xTo-1][yTo-1] == 107) return false;
-		
+		//if( ((yTo-1 >= 0) && (xTo+1 <= 7)) && this.spielfeld[xTo+1][yTo-1] == 107) return false;
+		//if( ((yTo-1 >= 0) && (xTo-1 >= 0)) && this.spielfeld[xTo-1][yTo-1] == 107) return false;
+		if(w_rasiert_mich_könig_rest( farbe, xTo,  yTo) == false) return false;
 		
 		
 		return true;
 		
+	}
+	
+	public boolean w_rasiert_mich_könig_rest(int farbe,int xTo, int yTo) {
+		if( ((yTo-1 >= 0) && (xTo+1 <= 7)) && this.spielfeld[xTo+1][yTo-1] == 107) return false;
+		if( ((yTo-1 >= 0) && (xTo-1 >= 0)) && this.spielfeld[xTo-1][yTo-1] == 107) return false;
+		
+		return true;
+	
+	
 	}
 	
 	public boolean s_rasiert_mich_könig(int farbe,int xTo, int yTo) {
@@ -69,13 +70,19 @@ public class King {
 		if( (yTo-1 >= 0) && this.spielfeld[xTo][yTo-1] == 75) return false;
 		if( (xTo+1 <= 7) && this.spielfeld[xTo+1][yTo] == 75) return false;
 		if( (xTo-1 >= 0) && this.spielfeld[xTo-1][yTo] == 75) return false;
-		if( ((yTo+1 <= 7) && (xTo+1 <= 7)) && this.spielfeld[xTo+1][yTo+1] == 75) return false;
-		if( ((yTo+1 <= 7) && (xTo-1 >= 0)) && this.spielfeld[xTo-1][yTo+1] == 75) return false;
-		
+		if(s_rasiert_mich_könig_rest( farbe, xTo,  yTo) == false) return false;
+
 		
 		
 		return true;
 		
+	}
+	
+	public boolean s_rasiert_mich_könig_rest(int farbe,int xTo, int yTo) {
+		if( ((yTo+1 <= 7) && (xTo+1 <= 7)) && this.spielfeld[xTo+1][yTo+1] == 75) return false;
+		if( ((yTo+1 <= 7) && (xTo-1 >= 0)) && this.spielfeld[xTo-1][yTo+1] == 75) return false;
+
+		return true;
 	}
 
 	
@@ -103,6 +110,12 @@ public class King {
 		return true;
 	}
 	
+	
+		
+	
+	
+
+	
 	public boolean schwarz_rasiert_mich_einer(int farbe,int xTo, int yTo) {
 		if(!s_rasiert_mich_pawn(farbe,xTo,yTo)) {return false;}
 		if(!s_rasiert_mich_rook(farbe,xTo,yTo)) {return false;}
@@ -110,8 +123,6 @@ public class King {
 		if(!s_rasiert_mich_pferd(farbe,xTo,yTo)) {return false;}
 		if(!s_rasiert_mich_könig(farbe,xTo,yTo)) {return false;}
 
-		
-		
 		return true;
 	}
 	
@@ -149,60 +160,28 @@ public class King {
 	
 	
 	public boolean w_rookrasiert(int farbe,int xTo, int yTo) {
-		
 		for(int i = this.xTo+1; i <= 7; i++) {
-			//if(this.spielfeld[i][this.yTo] <= 90) break;
-			//else if(this.spielfeld[i][this.yTo] == 107 || this.spielfeld[i][this.yTo] == 114  ) return false; 
-			
 			if(this.spielfeld[i][this.yTo] == 113 || this.spielfeld[i][this.yTo] == 114  ) return false;
-			else if(this.spielfeld[i][this.yTo] > 0) break;
-		}
-		
-		
+			else if(this.spielfeld[i][this.yTo] > 0) break;}
 		for(int i = this.xTo-1; i >= 0; i = i-1) {
-			//if(this.spielfeld[i][this.yTo] <= 90) break;
-			//else if(this.spielfeld[i][this.yTo] == 107 || this.spielfeld[i][this.yTo] == 114) return false; 
-			
-			
-			
 			if(this.spielfeld[i][this.yTo] == 113 || this.spielfeld[i][this.yTo] == 114  ) return false;
 			else if(this.spielfeld[i][this.yTo] > 0) break;		
 		}
-		
-		
-		
 		if( w_rasiert_mich_rook_rest( farbe, xTo,  yTo) == false ) return false;
-
-		
-		
-
-		
 		return true;
 	}
 	
 	
 	public boolean w_rasiert_mich_rook_rest(int farbe,int xTo, int yTo) {
 		for(int i = this.yTo+1; i <= 7; i++) {
-			//if(this.spielfeld[i][this.yTo] <= 90) break;
-			//else if(this.spielfeld[this.xTo][i] == 107 || this.spielfeld[this.xTo][i] == 114) return false;
 			if(this.spielfeld[this.xTo][i] == 113 || this.spielfeld[this.xTo][i] == 114  ) return false;
 			if(this.spielfeld[this.xTo][i] > 0) break;	
-		
 		}
 		
 		for(int i = this.yTo-1; i >= 0; i = i-1) {
-			//if(this.spielfeld[i][this.yTo] <= 90) break;
-			//else if(this.spielfeld[this.xTo][i] == 107 || this.spielfeld[this.xTo][i] == 114) return false;
-		
 			if(this.spielfeld[this.xTo][i] == 113 || this.spielfeld[this.xTo][i] == 114  ) return false;
 			if(this.spielfeld[this.xTo][i] > 0) break;	
 		}
-		
-		
-		
-		
-		
-		
 		return true;
 	}
 	
@@ -214,55 +193,27 @@ public class King {
 	
 	public boolean s_rasiert_mich_rook(int farbe,int xTo, int yTo) {
 		for(int i = this.xTo+1; i <= 7; i++) {
-			//if(this.spielfeld[i][this.yTo] > 90) break;
-			//if(this.spielfeld[i][this.yTo] == 75 || this.spielfeld[i][this.yTo] == 82) return false; 
-			
 			if(this.spielfeld[i][this.yTo] == 81 || this.spielfeld[i][this.yTo] == 82  ) return false;
 			else if(this.spielfeld[i][this.yTo] > 0) break;	
-			
-			
-			
 		}
 		
 		for(int i = this.xTo-1; i >= 0; i = i-1) {
-			//if(this.spielfeld[i][this.yTo] > 90) break;
-			//if(this.spielfeld[i][this.yTo] == 75 || this.spielfeld[i][this.yTo] == 82) return false;
-		
 			if(this.spielfeld[i][this.yTo] == 81 || this.spielfeld[i][this.yTo] == 82  ) return false;
 			else if(this.spielfeld[i][this.yTo] > 0) break;	
 		}
-		
-		
 		if( s_rasiert_mich_rook_rest( farbe, xTo,  yTo) == false ) return false;
-		
-		
-		
-		
-		
-		
-
-		
 		return true;
 	}
 
 	public boolean s_rasiert_mich_rook_rest(int farbe,int xTo, int yTo) {
 		for(int i = this.yTo+1; i <= 7; i++) {
-			//if(this.spielfeld[i][this.yTo] > 90) break;
-			//if(this.spielfeld[this.xTo][i] == 75 || this.spielfeld[this.xTo][i] == 82) return false; 
-		
 			if(this.spielfeld[this.xTo][i] == 81 || this.spielfeld[this.xTo][i] == 82)  return false;
 			else if(this.spielfeld[this.xTo][i] > 0) break;	
-			
 		}
-		
 		for(int i = this.yTo-1; i >= 0; i = i-1) {
-			//if(this.spielfeld[i][this.yTo] > 90) break;
-			//if(this.spielfeld[this.xTo][i] == 75 || this.spielfeld[this.xTo][i] == 82) return false; 
-			
 			if(this.spielfeld[this.xTo][i] == 81 || this.spielfeld[this.xTo][i] == 82)  return false;
 			else if(this.spielfeld[this.xTo][i] > 0) break;	
 		}
-		
 		return true;
 	}
 	
@@ -276,16 +227,13 @@ public class King {
 	
 	
 	public boolean w_diagonal_oben_rechts(int farbe,int xTo, int yTo){
-		
 		int x = xTo;
 		int y = yTo;
 		while( (x < 7) && (y < 7) ) {
 			x++;
 			y++;
 			if(this.spielfeld[x][y] == 98 || this.spielfeld[x][y] == 113) return false;
-			else if(this.spielfeld[x][y] > 0) break;
-		
-		}
+			else if(this.spielfeld[x][y] > 0) break;}
 			return true;}
 		
 	public boolean w_diagonal_oben_links(int farbe,int xTo, int yTo){
@@ -295,9 +243,7 @@ public class King {
 			x--;
 			y++;
 			if(this.spielfeld[x][y] == 98 || this.spielfeld[x][y] == 113) return false; 
-			else if(this.spielfeld[x][y] > 0) break;
-		
-		}
+			else if(this.spielfeld[x][y] > 0) break;}
 			return true;}
 	
 	
@@ -308,9 +254,7 @@ public class King {
 			x++;
 			y--;
 			if(this.spielfeld[x][y]== 98|| this.spielfeld[x][y] == 113) return false;
-			else if(this.spielfeld[x][y] > 0) break;
-		
-		}
+			else if(this.spielfeld[x][y] > 0) break;}
 			return true;}
 	
 	public boolean w_diagonal_unten_links(int farbe,int xTo, int yTo){
@@ -320,9 +264,7 @@ public class King {
 			x--;
 			y--;
 			if(this.spielfeld[x][y] == 98|| this.spielfeld[x][y] == 113) return false;
-			else if(this.spielfeld[x][y] > 0) break;
-		
-		}
+			else if(this.spielfeld[x][y] > 0) break;}
 			return true;}
 	
 	
@@ -334,9 +276,7 @@ public class King {
 			x++;
 			y++;
 			if(this.spielfeld[x][y] == 66 || this.spielfeld[x][y] == 81) return false; 
-			else if(this.spielfeld[x][y] > 0) break;
-		
-		}
+			else if(this.spielfeld[x][y] > 0) break;}
 			return true;}
 	
 	public boolean s_diagonal_oben_links(int farbe,int xTo, int yTo){
@@ -346,9 +286,7 @@ public class King {
 			x--;
 			y++;
 			if(this.spielfeld[x][y] == 66|| this.spielfeld[x][y] == 81) return false;
-			else if(this.spielfeld[x][y] > 0) break;
-		
-		}
+			else if(this.spielfeld[x][y] > 0) break;}
 			return true;}
 	
 	public boolean s_diagonal_unten_rechts(int farbe,int xTo, int yTo){
@@ -358,9 +296,7 @@ public class King {
 			x++;
 			y--;
 			if(this.spielfeld[x][y] == 66|| this.spielfeld[x][y] == 81) return false;
-			else if(this.spielfeld[x][y] > 0) break;
-		
-		}
+			else if(this.spielfeld[x][y] > 0) break;}
 			return true;}
 	
 	public boolean s_diagonal_unten_links(int farbe,int xTo, int yTo){
@@ -370,9 +306,7 @@ public class King {
 			x--;
 			y--;
 			if(this.spielfeld[x][y] == 66|| this.spielfeld[x][y] == 81) return false;
-			else if(this.spielfeld[x][y] > 0) break;
-		
-		}
+			else if(this.spielfeld[x][y] > 0) break;}
 			return true;}
 	
 	
@@ -381,10 +315,7 @@ public class King {
 		if(w_diagonal_oben_links( farbe, xTo,  yTo) == false) return false;
 		if(w_diagonal_unten_rechts( farbe, xTo,  yTo) == false) return false;
 		if(w_diagonal_unten_links( farbe, xTo,  yTo) == false) return false;
-				
-			
 			return true;
-		
 	}
 	public boolean s_rasiert_mich_bishop(int farbe,int xTo, int yTo) {
 		
@@ -392,8 +323,6 @@ public class King {
 	if(s_diagonal_oben_links( farbe, xTo,  yTo) == false) return false;
 	if(s_diagonal_unten_rechts( farbe, xTo,  yTo) == false) return false;
 	if(s_diagonal_unten_links( farbe, xTo,  yTo) == false) return false;
-			
-		
 		return true;
 	}
 	

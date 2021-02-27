@@ -99,13 +99,6 @@ public class TryMoveIntegrationTest {
 		assertGameState("rnbqkbnr/pppp1ppp/4p3/8/3P4/8/PPP1PPPP/RNBQKBNR/",true,false,false);
 	}
 	
-	@Test
-	public void schwarzPawnZweiVorAberJmdDazwischen() {
-		startGame("rnbqkbnr/pppppppp/4P3/8/3P4/8/PPP1PPPP/RNBQKBNR/",false);
-		assertMove("e7-e5",false,false);
-		assertGameState("rnbqkbnr/pppppppp/4P3/8/3P4/8/PPP1PPPP/RNBQKBNR/",false,false,false);
-	}
-	
 	
 	@Test
 	public void schwarzDortIstEinWeisserKoenig() {
@@ -1093,65 +1086,13 @@ public class TryMoveIntegrationTest {
 	
 
 	
-	@Test
-	public void SchwarzIstSchachAberKannObenRechts(){
-		startGame("8/8/5K2/8/1Q6/8/8/k7/",true);
-		assertMove("b4-b2",true,true);
-		assertGameState("8/8/5K2/8/8/8/1Q6/k7/",false,false,false);
-	}
-	
-	@Test
-	public void SchwarzIstSchachAberKannObenLinks(){
-		startGame("8/8/5K2/8/6Q1/8/8/7k/",true);
-		assertMove("g4-g2",true,true);
-		assertGameState("8/8/5K2/8/8/8/6Q1/7k/",false,false,false);
-	}
-	
 	
 	
 	@Test
-	public void SchwarzIstSchachMattObenRechts(){
+	public void SchwarzIstSchachMatt(){
 		startGame("7k/8/5K2/6Q1/8/8/8/8/",true);
 		assertMove("g5-g7",true,true);
 		assertGameState("7k/6Q1/5K2/8/8/8/8/8/",true,true,true);
-	}
-	
-	@Test
-	public void SchwarzIstSchachMattObenLinks(){
-		startGame("k7/8/2K5/1Q6/8/8/8/8/",true);
-		assertMove("b5-b7",true,true);
-		assertGameState("k7/1Q6/2K5/8/8/8/8/8/",true,true,true);
-	}
-	
-	
-	
-	@Test
-	public void SchwarzIstSchachMattUntenRechts(){
-		startGame("8/8/8/8/6Q1/5K2/8/7k/",true);
-		assertMove("g4-g2",true,true);
-		assertGameState("8/8/8/8/8/5K2/6Q1/7k/",true,true,true);
-	}
-	
-	@Test
-	public void SchwarzIstSchachMattUntenLinks(){
-		startGame("8/8/8/8/1Q6/2K5/8/k7/",true);
-		assertMove("b4-b2",true,true);
-		assertGameState("8/8/8/8/8/2K5/1Q6/k7/",true,true,true);
-	}
-	
-	
-	@Test
-	public void WeissBishopFix(){
-		startGame("rnbqkbnr/pppp1ppp/4p3/8/2B5/8/PPPPPPPP/RNBQK1NR/",true);
-		assertMove("c4-f7",true,false);
-		assertGameState("rnbqkbnr/pppp1ppp/4p3/8/2B5/8/PPPPPPPP/RNBQK1NR/",true,false,false);
-	}
-	
-	@Test
-	public void WeissQueenFix(){
-		startGame("rnbqkbnr/pppp1ppp/4p3/8/2Q5/8/PPPPPPPP/RNBQK1NR/",true);
-		assertMove("c4-f7",true,false);
-		assertGameState("rnbqkbnr/pppp1ppp/4p3/8/2Q5/8/PPPPPPPP/RNBQK1NR/",true,false,false);
 	}
 	
 	
@@ -1162,6 +1103,77 @@ public class TryMoveIntegrationTest {
 		assertGameState("7K/6q1/5k2/8/8/8/8/8/",false,true,false);
 	}
 	
+	
+	
+
+	
+//    @Test
+//    public void SchwarzIstSchachAberKannObenRechts(){
+//        startGame("8/8/5k2/8/1q6/8/8/K7/",false);
+//        assertMove("b4-b2",false,true);
+//        assertGameState("8/8/5k2/8/8/8/1q6/K7/",true,false,false);
+//    }
+//    
+//    @Test
+//    public void SchwarzIstSchachAberKannObenLinks(){
+//        startGame("8/8/5k2/8/6q1/8/8/7K/",false);
+//        assertMove("g4-g2",false,true);
+//        assertGameState("8/8/5k2/8/8/8/6q1/7K/",true,false,false);
+//    }
+//    
+//    
+//    @Test
+//    public void SchwarzIstSchachMattObenRechts(){
+//        startGame("7K/8/5k2/6q1/8/8/8/8/",false);
+//        assertMove("g5-g7",false,true);
+//        assertGameState("7K/6q1/5k2/8/8/8/8/8/",false,true,false);
+//    }
+//    
+//    @Test
+//    public void SchwarzIstSchachMattObenLinks(){
+//        startGame("K7/8/2k5/1q6/8/8/8/8/",false);
+//        assertMove("b5-b7",false,true);
+//        assertGameState("K7/1q6/2k5/8/8/8/8/8/",false,true,false);
+//    }
+//    
+//    
+//    
+//    
+//    
+//    @Test
+//    public void SchwarzIstSchachMattUntenRechts(){
+//        startGame("8/8/8/8/6q1/5k2/8/7K/",false);
+//        assertMove("g4-g2",false,true);
+//        assertGameState("8/8/8/8/8/5k2/6q1/7K/",false,true,false);
+//    }
+//    
+//    @Test
+//    public void SchwarzIstSchachMattUntenLinks(){
+//        startGame("8/8/8/8/1q6/2k5/8/K7/",false);
+//        assertMove("b4-b2",false,true);
+//        assertGameState("8/8/8/8/8/2k5/1q6/K7/",false,true,false);
+//    }
+//    
+//  @Test
+//  public void SchwarzIstSchachMattUntenLinks3(){
+//     startGame("8/5qrK/8/8/8/8/8/8/",false);
+//      assertMove("f7-g8",false,true);
+//      assertGameState("6q1/6rK/8/8/8/8/8/8/",true,false,false);
+//  }
+//
+//  @Test
+//  public void SchwarzIstSchachMattUntenLinks2(){
+//	     startGame("8/8/8/8/q7/2r5/1K6/8/",false);
+//	      assertMove("a4-b3",false,true);
+//	      assertGameState("8/8/8/8/8/1qr5/1K6/8/",true,false,false);
+//	  }
+//  
+//  @Test
+//  public void SchwarzIstSchachMattUntenLinks5(){
+//	     startGame("8/8/8/8/7q/5r2/6K1/8/",false);
+//	      assertMove("h4-g3",false,true);
+//	      assertGameState("8/8/8/8/8/5rq1/6K1/8/",true,false,false);
+//	  }
 	
 	@Test
 	public void Weis_Ist_Im_Matt(){
@@ -1248,23 +1260,20 @@ public class TryMoveIntegrationTest {
 	      assertGameState("8/8/8/8/8/5rq1/6K1/8/",true,false,false);
 	  }
   
-  @Test
-  public void SchwarzPlatziertBauerInFalscheReiheUnten(){
-	     startGame("5k2/2k3r1/K7/2r3k1/4k3/R6K/1K6/3KQ2R/",false);
-	      assertMove("p-c1",false,false);
-	      assertGameState("5k2/2k3r1/K7/2r3k1/4k3/R6K/1K6/3KQ2R/",false,false,false);
-	  }
   
   
-  
-  @Test
-  public void WeissPlatziertBauerInFalscheReiheOben(){
-	     startGame("5k2/2k3r1/K7/2r3k1/4k3/R6K/1K6/3KQ2R/",true);
-	      assertMove("P-c8",true,false);
-	      assertGameState("5k2/2k3r1/K7/2r3k1/4k3/R6K/1K6/3KQ2R/",true,false,false);
-	  }
-	
 
+    
+    
+    
+    
+	
+	
+	
+	
+	
+	
+	
 
 }
 
