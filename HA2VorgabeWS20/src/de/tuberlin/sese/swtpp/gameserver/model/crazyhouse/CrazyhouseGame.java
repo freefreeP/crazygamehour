@@ -443,7 +443,11 @@ public class CrazyhouseGame extends Game implements Serializable{
 			King koenig2= new King(kings_x,kings_y,kings_x-1,kings_y,this.Spielfeld);
 			if(koenig2.canI()) {
 				ruckgabe = true;}}
-		return(!(binIchImSchach(this.Spielfeld,this.blackPlayer) || ruckgabe|| schwarzistMatt_rest1() ||schwarzistMatt_rest2() ) );}
+		boolean teste = schwarzistMatt_rest1();
+		boolean testee = schwarzistMatt_rest2();
+
+		
+		return(!(binIchImSchach(this.Spielfeld,this.blackPlayer) || ruckgabe|| teste  ||testee ) );}
 	
 	public boolean schwarzistMatt_rest1() {
 		boolean ruckgabe = false;
@@ -504,7 +508,10 @@ public class CrazyhouseGame extends Game implements Serializable{
 			King koenig2= new King(kingw_x,kingw_y,kingw_x-1,kingw_y,this.Spielfeld);
 			if(koenig2.canI() == true) {
 				ruckgabe = true;}}
-		return(!(binIchImSchach(this.Spielfeld,this.whitePlayer) || ruckgabe|| weisistMatt_rest1() || weisistMatt_rest2()) );}
+		boolean teste = weisistMatt_rest1();
+		boolean testee = weisistMatt_rest2();
+		
+		return(!(binIchImSchach(this.Spielfeld,this.whitePlayer) || ruckgabe|| teste || testee ) );}
 	
 	
 	public boolean weisistMatt_rest1() {
