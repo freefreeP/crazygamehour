@@ -1,5 +1,3 @@
-
-
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 //import java.lang.*;
 public class King {
@@ -389,51 +387,42 @@ public boolean w_pferd9(int farbe,int xTo, int yTo) {
 	int x = xTo, y = yTo;
 	if( (y+2 >= 0 && y+2 <= 7 ) && (x+1 >= 0 && x+1 <= 7 ) && this.spielfeld[x][y] ==  98  ) {return false;}
 	return true;
-
 }
 public boolean w_pferd10(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (y+2 >= 0 && y+2 <= 7 ) && (x-1 >= 0 && x-1 <= 7 ) && this.spielfeld[x][y] ==  98  ) {return false;}
 return true;
-
 }
 public boolean w_pferd11(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (y-2 >= 0 && y-2 <= 7 ) && (x-1 >= 0 && x-1 <= 7 ) && this.spielfeld[x][y] ==  98  ) {return false;}
 return true;
-
 }
 public boolean w_pferd12(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (y-2 >= 0 && y-2 <= 7 ) && (x+1 >= 0 && x+1 <= 7 ) && this.spielfeld[x][y]==  98  ) {return false;}
 return true;
 }
-
-
 public boolean w_pferd13(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (x+2 >= 0 && x+2 <= 7 ) && (y+1 >= 0 && y+1 <= 7 ) && this.spielfeld[x][y] ==  98  ) {return false;}
 return true;
-
 }
 public boolean w_pferd14(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (x+2 >= 0 && x+1 <= 7 ) && (y-1 >= 0 && y-1 <= 7 ) && this.spielfeld[x][y] ==  98  ) {return false;}
 return true;
-
 }
 public boolean w_pferd15(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (x-2 >= 0 && x-2 <= 7 ) && (y-1 >= 0 && y-1 <= 7 ) && this.spielfeld[x][y] ==  98  ) {return false;}
 return true;
-
 }
 public boolean w_pferd16(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (x-2 >= 0 && x-2 <= 7 ) && (y+1 >= 0 && y+1 <= 7 ) && this.spielfeld[x][y]==  98  ) {return false;}
 return true;
 }
-
 */
 
 
@@ -535,49 +524,40 @@ return true;
 
 
 /* trivial - brauch nicht
-
 public boolean s_pferd9(int farbe,int xTo, int yTo) {
 	int x = xTo, y = yTo;
 	if( (y+2 >= 0 && y+2 <= 7 ) && (x+1 >= 0 && x+1 <= 7 ) && this.spielfeld[x][y] ==  66  ) {return false;}
 	return true;
-
 }
 public boolean s_pferd10(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (y+2 >= 0 && y+2 <= 7 ) && (x-1 >= 0 && x-1 <= 7 ) && this.spielfeld[x][y] ==  66  ) {return false;}
 return true;
-
 }
 public boolean s_pferd11(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (y-2 >= 0 && y-2 <= 7 ) && (x-1 >= 0 && x-1 <= 7 ) && this.spielfeld[x][y] ==  66  ) {return false;}
 return true;
-
 }
 public boolean s_pferd12(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (y-2 >= 0 && y-2 <= 7 ) && (x+1 >= 0 && x+1 <= 7 ) && this.spielfeld[x][y]==  66  ) {return false;}
 return true;
 }
-
-
 public boolean s_pferd13(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (x+2 >= 0 && x+2 <= 7 ) && (y+1 >= 0 && y+1 <= 7 ) && this.spielfeld[x][y] ==  66  ) {return false;}
 return true;
-
 }
 public boolean s_pferd14(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (x+2 >= 0 && x+1 <= 7 ) && (y-1 >= 0 && y-1 <= 7 ) && this.spielfeld[x][y] ==  66  ) {return false;}
 return true;
-
 }
 public boolean s_pferd15(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
 if( (x-2 >= 0 && x-2 <= 7 ) && (y-1 >= 0 && y-1 <= 7 ) && this.spielfeld[x][y] ==  66  ) {return false;}
 return true;
-
 }
 public boolean s_pferd16(int farbe,int xTo, int yTo) {
 int x = xTo, y = yTo;
@@ -645,7 +625,3 @@ public boolean s_rasiert_mich_pferd8(int farbe,int xTo, int yTo) {
 
 
 }
-	
-	
-	
-	
