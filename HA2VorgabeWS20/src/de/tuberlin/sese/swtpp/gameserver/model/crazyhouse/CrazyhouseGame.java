@@ -392,6 +392,11 @@ public class CrazyhouseGame extends Game implements Serializable{
 	
 	public char[] randHinzu(char[] Rand, char Figur) {
 		String StrRand = new String(Rand);
+		if(Figur < 97) {
+			Figur += 32;
+		}else {
+			Figur -= 32;
+		}
 		StrRand += Figur;
 		return StrRand.toCharArray();
 	}
@@ -430,7 +435,8 @@ public class CrazyhouseGame extends Game implements Serializable{
 		boolean ruckgabe = false;
 		if(kings_y+1 <= 7) { 
 			King koenig1 = new King(kings_x,kings_y,kings_x,kings_y+1,this.Spielfeld);
-			ruckgabe = koenig1.canI();}
+			if(koenig1.canI()) {
+				ruckgabe = true;}}
 		if(kings_x+1 <= 7) { 
 			King koenig2= new King(kings_x,kings_y,kings_x+1,kings_y,this.Spielfeld);
 			if(koenig2.canI()) {
