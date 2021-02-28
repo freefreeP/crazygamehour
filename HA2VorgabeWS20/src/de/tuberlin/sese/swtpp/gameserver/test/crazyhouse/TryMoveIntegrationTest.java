@@ -70,144 +70,6 @@ public class TryMoveIntegrationTest {
 	 * !!!!!!!!! To be implemented !!!!!!!!!!!!
 	 *******************************************/
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	////////////////////////////////////////
-	
-	
-	@Test
-	public void könig_korrekter_zur_seite_move() {
-		startGame("rnbqkbnr/pppppppp/8/8/8/4K3/PPPPPPPP/RNBQ1BNR/",true);
-		assertMove("e3-f3",true,true);
-		assertGameState("rnbqkbnr/pppppppp/8/8/8/5K2/PPPPPPPP/RNBQ1BNR/",false,false,false);
-	}
-	
-	
-	@Test
-	public void könig_falscher_move1() {
-		startGame("rnbqkbnr/pppppppp/8/8/8/4K3/PPPPPPPP/RNBQ1BNR/",true);
-		assertMove("e3-g3",true,false);
-		assertGameState("rnbqkbnr/pppppppp/8/8/8/4K3/PPPPPPPP/RNBQ1BNR/",true,false,false);
-	}
-	
-	
-	@Test
-	public void könig_falscher_move2() {
-		startGame("rnbqkbnr/pppppppp/8/8/8/2P1K3/PPPP1PPP/RNBQ1BNR/",true);
-		assertMove("e3-e5",true,false);
-		assertGameState("rnbqkbnr/pppppppp/8/8/8/2P1K3/PPPP1PPP/RNBQ1BNR/",true,false,false);
-	}
-	
-	@Test
-	public void könig_falscher_move3() {
-		startGame("rnbqkbnr/pppppppp/8/8/8/2P1K3/PPPP1PPP/RNBQ1BNR/",true);
-		assertMove("e3-e3",true,false);
-		assertGameState("rnbqkbnr/pppppppp/8/8/8/2P1K3/PPPP1PPP/RNBQ1BNR/",true,false,false);
-	}
-	
-	
-	
-	//############################## Alles für König weis #####################################//
-	
-				//################## Pawn #########################################
-	
-	@Test
-	public void w_könig_w_rasiert_mich_pawn_links() {
-		startGame("rnbqkbnr/pp1ppppp/8/2p5/8/3K4/PPPPPPPP/RNBQ1BNR/",true);
-		assertMove("d3-d4",true,false);
-		assertGameState("rnbqkbnr/pp1ppppp/8/2p5/8/3K4/PPPPPPPP/RNBQ1BNR/",true,false,false);
-	}
-	
-	
-	@Test
-	public void w_könig_w_rasiert_mich_pawn_rechts() {
-		startGame("rnbqkbnr/pp1ppppp/8/4p3/8/3K4/PPPPPPPP/RNBQ1BNR/",true);
-		assertMove("d3-d4",true,false);
-		assertGameState("rnbqkbnr/pp1ppppp/8/4p3/8/3K4/PPPPPPPP/RNBQ1BNR/",true,false,false);
-	}
-	
-	
-	@Test
-	public void w_könig_w_rasiert_mich_pawn_links2() {
-		startGame("rnbq1bnr/pppppppp/8/4k3/8/3K4/PPPPPPPP/RNBQ1BNR/",true);
-		assertMove("d3-d4",true,false);
-		assertGameState("rnbq1bnr/pppppppp/8/4k3/8/3K4/PPPPPPPP/RNBQ1BNR/",true,false,false);
-	}
-	
-	
-	@Test
-	public void w_könig_w_rasiert_mich_pawn_rechts1() {
-		startGame("rnbq1bnr/pppppppp/8/2k5/8/3K4/PPPPPPPP/RNBQ1BNR/",true);
-		assertMove("d3-d4",true,false);
-		assertGameState("rnbq1bnr/pppppppp/8/2k5/8/3K4/PPPPPPPP/RNBQ1BNR/",true,false,false);
-	}
-	
-	 ///////
-	
-	
-	
-	@Test
-	public void w_könig_w_rasiert_mich_pawn_außerhalbfeld2() {
-		startGame("rrbqk3/pppnpp2/pnb5/p6K/8/p3P3/2PPNPPP/1RBQPBNR/",true);
-		assertMove("h5-h6",true,true);
-		assertGameState("rrbqk3/pppnpp2/pnb4K/p7/8/p3P3/2PPNPPP/1RBQPBNR/",false,false,false);
-	}
-	
-	
-	@Test
-	public void w_könig_w_rasiert_mich_pawn_außerhalbfeld21() {
-		startGame("4knrb/K1pnppqr/3pppb1/3p1p2/8/4P3/2PPNPPP/1RBQPBNR/",true);
-		assertMove("a7-a8",true,true);
-		assertGameState("K3knrb/2pnppqr/3pppb1/3p1p2/8/4P3/2PPNPPP/1RBQPBNR/",false,false,false);
-	}
-	
-	
-	@Test
-	public void w_könig_w_rasiert_mich_pawn_außerhalbfeld22() {
-		startGame("2rnkbp1/2p1p3/8/8/8/2NPPP2/1RPPNP1K/1RBQPB2/",true);
-		assertMove("h2-h1",true,true);
-		assertGameState("2rnkbp1/2p1p3/8/8/8/2NPPP2/1RPPNP2/1RBQPB1K/",false,false,false);
-	}
-	
-	
-	@Test
-	public void w_könig_w_rasiert_mich_pawn_außerhalbfeld() {
-		startGame("2rnkb2/2ppp2K/8/8/8/2NPPP2/1RPPNP2/1RBQPB2/",true);
-		assertMove("h7-h8",true,true);
-		assertGameState("2rnkb1K/2ppp3/8/8/8/2NPPP2/1RPPNP2/1RBQPB2/",false,false,false);
-	}
-	
-	//################# alles korrekt bisher für weiß pawn jetzt schwarz das gleiche
-
-	@Test
-	public void s_könig_w_rasiert_mich_pawn_links() {
-		startGame("rnbq1bnr/pppppppp/4k3/8/3P4/8/PPP1PPPP/RNBQKBNR/",false);
-		assertMove("e6-e5",false,false);
-		assertGameState("rnbq1bnr/pppppppp/4k3/8/3P4/8/PPP1PPPP/RNBQKBNR/",false,false,false);
-	}
-	
-	
-	@Test
-	public void s_könig_w_rasiert_mich_pawn_rechts() {
-		startGame("rnbq1bnr/pppppppp/4k3/8/5P2/8/PPP1PPPP/RNBQKBNR/",false);
-		assertMove("e6-e5",false,false);
-		assertGameState("rnbq1bnr/pppppppp/4k3/8/5P2/8/PPP1PPPP/RNBQKBNR/",false,false,false);
-	}
-	
-	
 	@Test
 	public void s_könig_w_rasiert_mich_pawn_links2() {
 		startGame("rnbq1bnr/pppppppp/4k3/P7/5K2/8/PPP1PPPP/RNBQ1BNR/",false);
@@ -479,7 +341,7 @@ public class TryMoveIntegrationTest {
 	public void WeissAngreiferWirFuegenRandSPHinzuMitAnderenSachenSchonDa() {//SP -> schwazer pawn
 		startGame("rnbqkbnr/pppppppp/8/4p3/3P4/8/PPPPPPPP/RNBQKBNR/BBNRbrr",true);
 		assertMove("d4-e5",true,true);
-		assertGameState("rnbqkbnr/pppppppp/8/4P3/8/8/PPPPPPPP/RNBQKBNR/BBNRbprr",false,false,false);
+		assertGameState("rnbqkbnr/pppppppp/8/4P3/8/8/PPPPPPPP/RNBQKBNR/BBNPRbrr",false,false,false);
 	}
 	
 	
@@ -536,7 +398,7 @@ public class TryMoveIntegrationTest {
 	public void rookTestKannLinieSeite() {
 		startGame("rnbqkbn1/3ppp2/8/2P1r3/8/4P3/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e5-c5",false,true);
-		assertGameState("rnbqkbn1/3ppp2/8/2r5/8/4P3/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/3ppp2/8/2r5/8/4P3/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 	
 	
@@ -545,21 +407,21 @@ public class TryMoveIntegrationTest {
 	public void queenTestKannLinieSeite() {
 		startGame("rnbqkbn1/3ppp2/8/2P1q3/8/4P3/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e5-c5",false,true);
-		assertGameState("rnbqkbn1/3ppp2/8/2q5/8/4P3/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/3ppp2/8/2q5/8/4P3/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 	
 	@Test
 	public void rookTestKannLinieHoehe() {
 		startGame("rnbqkbn1/3ppp2/8/2P1r3/8/4P3/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e5-e3",false,true);
-		assertGameState("rnbqkbn1/3ppp2/8/2P5/8/4r3/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/3ppp2/8/2P5/8/4r3/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 
 	@Test
 	public void queenTestKannLinieHoehe() {
 		startGame("rnbqkbn1/3ppp2/8/2P1q3/8/4P3/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e5-e3",false,true);
-		assertGameState("rnbqkbn1/3ppp2/8/2P5/8/4q3/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/3ppp2/8/2P5/8/4q3/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 	
 	@Test
@@ -609,14 +471,14 @@ public class TryMoveIntegrationTest {
 	public void bishopTestHoltUntenLinks() {
 		startGame("rnbqkbn1/8/8/1P2b3/3P4/8/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e5-d4",false,true);
-		assertGameState("rnbqkbn1/8/8/1P6/3b4/8/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/8/8/1P6/3b4/8/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 	
 	@Test
 	public void queenTestHoltUntenLinks() {
 		startGame("rnbqkbn1/8/8/1P2q3/3P4/8/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e5-d4",false,true);
-		assertGameState("rnbqkbn1/8/8/1P6/3q4/8/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/8/8/1P6/3q4/8/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 	
 	
@@ -624,7 +486,7 @@ public class TryMoveIntegrationTest {
 	public void bishopTestHoltObenRechts() {
 		startGame("rnbqkbn1/8/3P1P2/1P2b3/3P1P2/8/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e5-f6",false,true);
-		assertGameState("rnbqkbn1/8/3P1b2/1P6/3P1P2/8/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/8/3P1b2/1P6/3P1P2/8/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 	
 	
@@ -633,14 +495,14 @@ public class TryMoveIntegrationTest {
 	public void queenTestHoltObenRechts() {
 		startGame("rnbqkbn1/8/3P1P2/1P2q3/3P1P2/8/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e5-f6",false,true);
-		assertGameState("rnbqkbn1/8/3P1q2/1P6/3P1P2/8/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/8/3P1q2/1P6/3P1P2/8/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 	
 	@Test
 	public void bishopTestHoltObenLinks() {
 		startGame("rnbqkbn1/1P2p3/8/1P3P2/4b3/3PRP2/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e4-b7",false,true);
-		assertGameState("rnbqkbn1/1b2p3/8/1P3P2/8/3PRP2/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/1b2p3/8/1P3P2/8/3PRP2/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 	
 	
@@ -648,7 +510,7 @@ public class TryMoveIntegrationTest {
 	public void queenTestHoltObenLinks() {
 		startGame("rnbqkbn1/1P2p3/8/1P3P2/4q3/3PRP2/2PPPPP1/RNBQKBNR/", false);
 		assertMove("e4-b7",false,true);
-		assertGameState("rnbqkbn1/1q2p3/8/1P3P2/8/3PRP2/2PPPPP1/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbn1/1q2p3/8/1P3P2/8/3PRP2/2PPPPP1/RNBQKBNR/p",true,false,false);
 	}
 	
 	
@@ -689,7 +551,7 @@ public class TryMoveIntegrationTest {
 	public void pawnSchwarzHoltUntenLinks() {
 		startGame("rnbqkbnr/1ppppppp/8/6p1/5P2/8/PPPPP1PP/RNBQKBNR/", false);
 		assertMove("g5-f4",false,true);
-		assertGameState("rnbqkbnr/1ppppppp/8/8/5p2/8/PPPPP1PP/RNBQKBNR/P",true,false,false);
+		assertGameState("rnbqkbnr/1ppppppp/8/8/5p2/8/PPPPP1PP/RNBQKBNR/p",true,false,false);
 	}
 	
 	
@@ -1615,6 +1477,18 @@ public class TryMoveIntegrationTest {
 	  }
   
   
+  @Test
+  public void SchwarzKingExtraTest(){
+	     startGame("8/8/8/K7/8/6Q1/8/7k/",true);
+	      assertMove("g3-h2",true,true);
+	      assertGameState("8/8/8/K7/8/8/7Q/7k/",false,false,false);
+	  }
+  
+  
+  
+  
+  
+  
   
   @Test
   public void WeissPlatziertBauerInFalscheReiheOben(){
@@ -1622,6 +1496,10 @@ public class TryMoveIntegrationTest {
 	      assertMove("P-c8",true,false);
 	      assertGameState("5k2/2k3r1/K7/2r3k1/4k3/R6K/1K6/3KQ2R/",true,false,false);
 	  }
+  
+  
+  
+  
     
     
     
