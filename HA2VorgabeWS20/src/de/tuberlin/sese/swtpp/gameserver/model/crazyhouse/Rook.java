@@ -21,25 +21,24 @@ public class Rook {
 	public boolean canI() {
 		int diffy = Math.abs(this.yTo - this.yFrom);
 		int diffx = Math.abs(this.xTo - this.xFrom);
-		if(diffy > 0 ) {
-			if(diffx == 0) {
-				int anfang = Math.min(this.yFrom,this.yTo)+1;
-				int ende = Math.max(this.yFrom,this.yTo)-1;
-				for(int i = anfang; i <= ende; i++) {
-					if(this.spielfeld[this.xFrom][i] != 0) return false; 
-				}
-				return true;
+		
+		if(diffy > 0 && diffx == 0) {
+			int anfang = Math.min(this.yFrom,this.yTo)+1;
+			int ende = Math.max(this.yFrom,this.yTo)-1;
+			for(int i = anfang; i <= ende; i++) {
+				if(this.spielfeld[this.xFrom][i] != 0) return false; 
 			}
-			
-			return false;
+			return true;
 		}
-		int anfang = Math.min(this.xFrom,this.xTo)+1;
-		int ende = Math.max(this.xFrom,this.xTo)-1;
-		for(int i = anfang; i <= ende; i++) {
-			if(this.spielfeld[i][this.yFrom] != 0) return false; 
+		else if(diffy == 0 && diffx > 0) {
+			int anfang = Math.min(this.xFrom,this.xTo)+1;
+			int ende = Math.max(this.xFrom,this.xTo)-1;
+			for(int i = anfang; i <= ende; i++) {
+				if(this.spielfeld[i][this.yFrom] != 0) return false; 
+			}
+			return true;
 		}
-		return true;
-
+		return false;
 	}
 	
 	

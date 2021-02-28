@@ -23,28 +23,17 @@ public class Queen {
 		return (this.canIDiagonal(diffx, diffy) || this.canILine(diffx, diffy));	
 	}
 	
-public void richtungsBestimmung() {
-		
-		if(this.xTo < this.xFrom) {
-			int tmp = this.xTo;
-			this.xTo = this.xFrom;
-			this.xFrom = tmp;
-			tmp = this.yTo;
-			this.yTo = this.yFrom;
-			this.yFrom = tmp;
-		}
-		
-	}
-	
 	
 	public boolean canIDiagonal(int diffx, int diffy) {
 		if(diffx == diffy) {
-			this.richtungsBestimmung();
-			int anfangY = Math.max(this.yFrom, this.yTo)-1;
-			int endeY = Math.min(this.yFrom, this.yTo)+1;
-			if(this.yTo > this.yFrom) {
-				anfangY = Math.min(this.yFrom, this.yTo)+1;
-				endeY = Math.max(this.yFrom, this.yTo)-1;
+			int anfangY;
+			int endeY;
+			if(this.xTo - this.xFrom < 0) {
+				anfangY = Math.max(this.yFrom, this.yTo)-1;
+				endeY = Math.min(this.yFrom, this.yTo)+1;
+			}else {
+				endeY = Math.max(this.yFrom, this.yTo)+1;
+				anfangY = Math.min(this.yFrom, this.yTo)-1;
 			}
 			int anfangX = Math.min(this.xFrom, this.xTo)+1;
 			int endeX = Math.max(this.xFrom, this.xTo)-1;
@@ -62,8 +51,7 @@ public void richtungsBestimmung() {
 	}
 	
 public boolean canILine(int diffx, int diffy) {
-	if(diffy > 0 ) {
-		if(diffx == 0) {
+		if(diffy > 0 && diffx == 0) {
 			int anfang = Math.min(this.yFrom,this.yTo)+1;
 			int ende = Math.max(this.yFrom,this.yTo)-1;
 			for(int i = anfang; i <= ende; i++) {
@@ -71,14 +59,14 @@ public boolean canILine(int diffx, int diffy) {
 			}
 			return true;
 		}
-		
+		else if(diffy == 0 && diffx > 0) {
+			int anfang = Math.min(this.xFrom,this.xTo)+1;
+			int ende = Math.max(this.xFrom,this.xTo)-1;
+			for(int i = anfang; i <= ende; i++) {
+				if(this.spielfeld[i][this.yFrom] != 0) return false; 
+			}
+			return true;
+		}
 		return false;
-	}
-	int anfang = Math.min(this.xFrom,this.xTo)+1;
-	int ende = Math.max(this.xFrom,this.xTo)-1;
-	for(int i = anfang; i <= ende; i++) {
-		if(this.spielfeld[i][this.yFrom] != 0) return false; 
-	}
-	return true;
 	}
 }
